@@ -13,7 +13,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
 }) => {
 	return (
 		<p
-			className={`${className} text-danger font-semibold text-xl ${
+			className={`${className} text-[rgb(var(--color-danger))] font-semibold text-xl ${
 				inline ? "inline-block" : ""
 			} ${position ? position : "text-left"}`}
 		>

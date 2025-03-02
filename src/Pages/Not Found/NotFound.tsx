@@ -17,7 +17,6 @@ const NotFound = () => {
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
 			<div className="relative">
-				{/* Stars background */}
 				<div className="absolute inset-0 overflow-hidden">
 					{[...Array(50)].map((_, i) => (
 						<div

@@ -37,10 +37,7 @@ const Avatar: FC<AvatarProps> = ({ imageUrl, height, width, onClick }) => {
 					referrerPolicy="no-referrer"
 				/>
 			) : (
-				<MdPerson
-					className={`rounded-full text-content ${scaling}`}
-					size={45}
-				/>
+				<MdPerson className={`rounded-full ${scaling}`} size={45} />
 			)}
 		</div>
 	);

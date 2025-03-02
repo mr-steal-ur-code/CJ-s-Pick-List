@@ -25,9 +25,9 @@ export default defineConfig({
     injectRegister: 'script-defer',
 
     manifest: {
-      name: 'My App',
-      short_name: 'App',
-      description: 'This is my app\'s description.',
+      name: 'CJ\'s Pick List',
+      short_name: 'Pick List',
+      description: 'Your ultimate list-making tool—effortlessly create, edit, and manage lists in an instant.',
       theme_color: '#FFD700',
 
       icons: [{

@@ -64,8 +64,8 @@ const Register: React.FC = () => {
 				</div>
 			) : (
 				<div className="px-2">
-					<p className="pb-12 text-xl text-primary2">
-						Please use a valid email when registering
+					<p className="text-center pb-12 text-xl">
+						Please use a valid email address
 					</p>
 					<form onSubmit={(e) => handleUserCreate(e)}>
 						<Input

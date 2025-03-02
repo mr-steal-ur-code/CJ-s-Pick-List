@@ -9,7 +9,7 @@ type PhotoUploadProps = {
 	error?: string;
 	value?: string;
 	hidePreview?: boolean;
-	resetRef?: React.MutableRefObject<() => void | null>;
+	resetRef?: React.RefObject<() => void | null>;
 };
 const PhotoUpload: React.FC<PhotoUploadProps> = ({
 	onChange,
@@ -69,7 +69,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
 								if (!confirm("Clear selected Image?")) return;
 								clear();
 							}}
-							className="inline-block text-danger ml-4 mb-8 cursor-pointer hover:text-opacity-50"
+							className="inline-block text-[rgb(var(--color-danger))] ml-4 mb-8 cursor-pointer hover:text-opacity-50"
 							size={40}
 						/>
 					</div>

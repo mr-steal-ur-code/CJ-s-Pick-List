@@ -67,7 +67,7 @@ const Modal = forwardRef<ModalHandle, ModalProps>(
 					{children}
 					{closeButton && (
 						<button
-							className="absolute right-0 bottom-0 p-2 hover:text-primary"
+							className="absolute right-0 bottom-0 p-2 hover:text-primary cursor-pointer"
 							onClick={dismiss}
 						>
 							Dismiss

@@ -29,14 +29,14 @@ const RecoverPassword: React.FC = () => {
 			<Link className="text-sm align-middle hover:text-primary" to="/sign-in">
 				<IoArrowBack className="inline-block" /> Back to sign in
 			</Link>
-			<div className="fade-in flex flex-col items-center gap-4 pt-12">
+			<div className="fade-in flex flex-col items-center gap-12 pt-12">
 				<h4>Forgot your password?</h4>
 				<p className="font-bold p-2">
 					Enter the email address associated with your account and we'll send
 					you instructions to reset it.
 				</p>
 				{message && <ErrorMessage className="pb-4" error={message} />}
-				<div className="flex flex-row items-start gap-8">
+				<div className="flex flex-row items-start justify-center gap-8">
 					<Input
 						type="email"
 						name="email"

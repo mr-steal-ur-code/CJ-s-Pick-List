@@ -60,7 +60,7 @@ const Header = () => {
 				<AppToaster />
 			</div>
 			{isLoggedIn && !emailVerified && (
-				<span className="text-content text-center">
+				<span className="text-center">
 					Please verify your E-mail{" "}
 					<Button
 						type="text"

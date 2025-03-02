@@ -2,8 +2,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 @theme {
@@ -20,7 +18,7 @@
   --color-accent-1: rgb(130, 145, 120);
   --color-accent-2: rgb(120, 125, 200);
 
-  --color-primary: rgb(225, 145, 70);
+  --color-primary: rgb(170, 50, 40);
   --color-tertiary: rgb(0, 120, 120);
   --color-glass: rgba(0, 0, 0, 0.1);
   --color-success: rgb(75, 160, 50);
