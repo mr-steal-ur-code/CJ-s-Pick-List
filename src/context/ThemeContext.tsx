@@ -17,7 +17,7 @@ export const ThemeContextProvider = ({ children }) => {
 	const toggleTheme = () => {
 		const newTheme = currentTheme === "dark" ? "light" : "dark";
 		setTheme(newTheme);
-		localStorage.setItem("cloud-cookbook-theme", newTheme);
+		localStorage.setItem("pick-list-theme", newTheme);
 	};
 
 	useEffect(() => {

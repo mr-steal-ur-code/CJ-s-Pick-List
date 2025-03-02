@@ -36,7 +36,7 @@ const userState = create<UserStore>()(
     },
     clearCache: async () => set({ user: {} })
   }), {
-    name: "cloud-cookbook-store",
+    name: "pick-list-store",
     storage: createJSONStorage(() => localStorage),
   })
 );

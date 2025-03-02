@@ -1,6 +1,6 @@
 const isDarkMode = () => {
   const isSystemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)")?.matches || false;
-  const themeValue = localStorage?.getItem("cloud-cookbook-theme") || null;
+  const themeValue = localStorage?.getItem("pick-list-theme") || null;
   const isDark =
     themeValue && themeValue === "dark"
       ? true

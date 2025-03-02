@@ -50,3 +50,23 @@ type WhereStatement = {
   conditional: WhereFilterOp;
   value: any;
 }
+
+type ListItem = {
+  id?: string;
+  name?: string;
+  refrigerated?: boolean;
+  category?: "grocery" | "work" | "household" | "event" | "other" | "";
+  unit?: "box" | "bottle" | "pack" | "case" | "bag" | "";
+  tags?: string;
+  location?: "store" | "online" | "";
+}
+
+type List = {
+  id?: string;
+  name?: string;
+  description?: string;
+  createdAt?: string;
+  upstringdAt?: Date;
+  items?: ListItem[];
+  category?: "grocery" | "work" | "household" | "event" | "other";
+}

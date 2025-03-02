@@ -89,7 +89,7 @@ const NotFound = () => {
 					</div>
 
 					<p className="mt-8 text-gray-400">
-						Auto-redirecting to home in {countdown} seconds...
+						Returning home in {countdown} seconds...
 					</p>
 				</div>
 			</div>
