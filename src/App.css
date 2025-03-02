@@ -1,0 +1,208 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 300px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --gradient-color-stops-primary-gradient:
+    rgb(var(--color-secondary)), rgb(225, 145, 70);
+
+  --color-accent-1: rgb(130, 145, 120);
+  --color-accent-2: rgb(120, 125, 200);
+
+  --color-primary: rgb(225, 145, 70);
+  --color-tertiary: rgb(0, 120, 120);
+  --color-glass: rgba(0, 0, 0, 0.1);
+  --color-success: rgb(75, 160, 50);
+  --color-warning: rgb(240, 210, 20);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {}
+
+@layer base {
+
+  body {
+    @apply bg-[rgb(var(--color-bkg))] text-[rgb(var(--color-content))] font-sans font-medium;
+  }
+
+  h1 {
+    @apply text-4xl lg:text-5xl
+  }
+
+  h2 {
+    @apply text-3xl lg:text-4xl
+  }
+
+  h3 {
+    @apply text-2xl lg:text-3xl
+  }
+
+  h4 {
+    @apply text-xl lg:text-2xl
+  }
+
+  :root {
+    --color-bkg: 255 245 210;
+    --color-bkg2: 220 210 180;
+    --color-content: 75 75 75;
+    --color-secondary: 240 185 90;
+    --color-hover-bkg: 0, 0, 0, .2;
+    --color-danger: 200 0 50;
+  }
+
+  @media (prefers-color-scheme:dark) {
+    :root {
+      --color-bkg: 130 120 80;
+      --color-bkg2: 150 140 100;
+      --color-content: 240 240 240;
+      --color-secondary: 240 170 70;
+      --color-hover-bkg: 255, 255, 255, .2;
+      --color-danger: 150 40 60;
+    }
+  }
+
+  [data-theme="light"] {
+    --color-bkg: 255 245 210;
+    --color-bkg2: 220 210 180;
+    --color-content: 75 75 75;
+    --color-secondary: 240 185 90;
+    --color-hover-bkg: 0, 0, 0, .2;
+    --color-danger: 200 0 50;
+  }
+
+  [data-theme="dark"] {
+    --color-bkg: 130 120 80;
+    --color-bkg2: 150 140 100;
+    --color-content: 240 240 240;
+    --color-secondary: 240 170 70;
+    --color-hover-bkg: 255, 255, 255, .2;
+    --color-danger: 150 40 60;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.messageAnimation {
+  right: -120px;
+}
+
+.messageAnimation-active {
+  right: 54px;
+  transition: right 0.8s ease;
+}
+
+.messageAnimation-close {
+  right: -120px;
+  transition: right 0.8s ease;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: translateY(50vh);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.4s ease;
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: translateY(50vh);
+  transition: opacity 0.5s ease, transform 0.4s ease;
+}
+
+.modal-bg-enter {
+  background-color: transparent;
+}
+
+.modal-bg-enter-active {
+  background-color: rgba(0, 0, 0, .8);
+  transition: background-color .5s ease;
+}
+
+.modal-bg-exit {
+  background-color: rgba(0, 0, 0, .8);
+}
+
+.modal-bg-exit-active {
+  background-color: transparent;
+  transition: background-color .5s ease;
+}
+
+.scale {
+  animation: scale .8s infinite;
+}
+
+@keyframes scale {
+  0% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.2;
+  }
+
+  100% {
+    scale: 1
+  }
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
