@@ -6,13 +6,11 @@ import ItemForm from "../../components/ItemForm";
 
 const EditItem: React.FC = () => {
 	const { itemId } = useParams<{ itemId: string }>();
-	const { items } = itemState();
+	const { items, updateItem } = itemState();
 	const [currentItem, setCurrentItem] = useState<ListItem>({});
 
 	useEffect(() => {
 		if (items) {
-			console.log("items:", items);
-
 			const foundItem = items.find((item) => item?.id === itemId);
 			if (foundItem) setCurrentItem(foundItem);
 		}
@@ -21,7 +19,10 @@ const EditItem: React.FC = () => {
 	return (
 		<div className="p-4 max-w-md mx-auto flex flex-col md:flex-row gap-4 w-full">
 			<ListItem item={currentItem} />
-			<ItemForm onSubmit={(e) => console.log(e)} />
+			<ItemForm
+				listItem={currentItem}
+				onSubmit={(e) => updateItem(itemId!, e)}
+			/>
 		</div>
 	);
 };

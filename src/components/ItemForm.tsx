@@ -17,7 +17,10 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
 
 	useEffect(() => {
 		if (listItem) {
-			setItem(listItem);
+			setItem((prev) => ({
+				...prev,
+				...listItem,
+			}));
 		}
 	}, [listItem]);
 

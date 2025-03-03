@@ -15,7 +15,7 @@ const NotFound = () => {
 	}, [countdown, navigate]);
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+		<div className="flex flex-col items-center justify-center min-h-[calc(100vh-128px)] bg-gray-900 text-white px-4">
 			<div className="relative">
 				<div className="absolute inset-0 overflow-hidden">
 					{[...Array(50)].map((_, i) => (
@@ -34,9 +34,9 @@ const NotFound = () => {
 					))}
 				</div>
 
-				<div className="relative z-10 flex flex-col items-center">
-					<h1 className="text-8xl font-bold mb-4 text-blue-400">404</h1>
-					<div className="w-64 h-64 relative mb-8">
+				<div className="relative flex flex-col items-center">
+					<h1 className="text-6xl font-bold mb-4 text-blue-400">404</h1>
+					<div className="w-64 h-64 relative">
 						<div className="absolute w-40 h-40 rounded-full bg-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 							<div className="absolute w-full h-full rounded-full bg-blue-700 opacity-70 overflow-hidden">
 								{[...Array(5)].map((_, i) => (
@@ -65,9 +65,9 @@ const NotFound = () => {
 						</div>
 					</div>
 
-					<h2 className="text-2xl font-bold mb-4">
+					<h3 className="text-2xl font-bold mb-4">
 						Houston, We Have a Problem!
-					</h2>
+					</h3>
 					<p className="text-lg mb-6 text-center max-w-md">
 						The page you're looking for has drifted into deep space or never
 						existed in the first place.

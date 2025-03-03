@@ -5,19 +5,6 @@
 @tailwind utilities;
 
 @theme {
-  --breakpoint-*: initial;
-  --breakpoint-sm: 300px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
-
-  --gradient-color-stops-primary-gradient:
-    rgb(var(--color-secondary)), rgb(225, 145, 70);
-
-  --color-accent-1: rgb(130, 145, 120);
-  --color-accent-2: rgb(120, 125, 200);
-
   --color-primary: rgb(170, 50, 40);
   --color-tertiary: rgb(0, 120, 120);
   --color-glass: rgba(0, 0, 0, 0.1);
@@ -69,39 +56,47 @@
   }
 
   :root {
-    --color-bkg: 255 245 210;
-    --color-bkg2: 220 210 180;
+    --color-bkg: 245 245 250;
+    --color-bkg2: 225 230 240;
+    --color-secondary: 100 140 250;
+    --color-accent-1: 210, 230, 255;
+    --color-accent-2: 160, 190, 250;
     --color-content: 75 75 75;
-    --color-secondary: 240 185 90;
     --color-hover-bkg: 0, 0, 0, .2;
     --color-danger: 200 0 50;
   }
 
   @media (prefers-color-scheme:dark) {
     :root {
-      --color-bkg: 130 120 80;
-      --color-bkg2: 150 140 100;
+      --color-bkg: 15 15 25;
+      --color-bkg2: 25 25 45;
+      --color-secondary: 0 255 180;
+      --color-accent-1: 40, 70, 120;
+      --color-accent-2: 25, 50, 100;
       --color-content: 240 240 240;
-      --color-secondary: 240 170 70;
       --color-hover-bkg: 255, 255, 255, .2;
       --color-danger: 150 40 60;
     }
   }
 
   [data-theme="light"] {
-    --color-bkg: 255 245 210;
-    --color-bkg2: 220 210 180;
+    --color-bkg: 245 245 250;
+    --color-bkg2: 225 230 240;
+    --color-secondary: 100 140 250;
+    --color-accent-1: 210, 230, 255;
+    --color-accent-2: 160, 190, 250;
     --color-content: 75 75 75;
-    --color-secondary: 240 185 90;
     --color-hover-bkg: 0, 0, 0, .2;
     --color-danger: 200 0 50;
   }
 
   [data-theme="dark"] {
-    --color-bkg: 130 120 80;
-    --color-bkg2: 150 140 100;
+    --color-bkg: 15 15 25;
+    --color-bkg2: 25 25 45;
+    --color-secondary: 0 255 180;
+    --color-accent-1: 40, 70, 120;
+    --color-accent-2: 25, 50, 100;
     --color-content: 240 240 240;
-    --color-secondary: 240 170 70;
     --color-hover-bkg: 255, 255, 255, .2;
     --color-danger: 150 40 60;
   }

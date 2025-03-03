@@ -29,7 +29,7 @@ const AuthContext = createContext<AuthContextType | any>("");
 
 export const AuthContextProvider = ({ children }: { children: any }) => {
 	const { setUser, clearUserCache } = userState();
-	const { clearItemCache } = itemState();
+	const { setItems, clearItemCache } = itemState();
 
 	const [isMember, setIsMember] = useState<boolean | undefined>(undefined);
 	const [isAdmin, setIsAdmin] = useState<boolean | undefined>(undefined);
@@ -146,6 +146,7 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 				const userDocRes = await handleUserDocument(currentUser);
 				if (userDocRes?.success) {
 					await setUser(userDocRes?.response);
+					setItems();
 				}
 			}
 		});

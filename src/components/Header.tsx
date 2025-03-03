@@ -4,14 +4,12 @@ import ThemeSwitch from "./Theme Switch/ThemeSwitch";
 import AppToaster from "./Toast/AppToaster";
 import bookStore from "../store/userStore";
 import { useAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ModalProfile from "./ModalProfile";
-import { IoHomeSharp } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Button from "./Button";
 
 const Header = () => {
-	const navigate = useNavigate();
 	const { user } = bookStore();
 	const { isLoggedIn, emailVerified, sendVerificationEmail } = useAuth();
 	const modalRef = useRef<ModalHandle>(null);
@@ -40,11 +38,7 @@ const Header = () => {
 		>
 			<div className={`flex flex-row items-center justify-between px-4 flex-1`}>
 				<ThemeSwitch />
-				<IoHomeSharp
-					className="cursor-pointer text-primary"
-					size={30}
-					onClick={() => navigate("/")}
-				/>
+				<img className="h-10 w-10" src="/assets/svg/icon.svg" />
 				<div className="flex flex-row gap-2 items-center">
 					{isLoggedIn === false ? <Link to="/sign-in">sign in</Link> : null}
 					<Avatar

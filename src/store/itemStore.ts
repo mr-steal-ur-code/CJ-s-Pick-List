@@ -5,7 +5,7 @@ import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/fir
 type ItemStore = {
   items: ListItem[];
   setItems: () => Promise<{ success?: boolean }>;
-  saveItem: (itemId: string, data: ListItem) => Promise<{ success?: boolean }>;
+  updateItem: (itemId: string, data: ListItem) => Promise<{ success?: boolean }>;
   createItem: (data: ListItem) => Promise<{ success: boolean }>,
   deleteItem: (itemId: string) => Promise<{ success: boolean }>;
   clearItemCache: () => void;
@@ -18,7 +18,7 @@ const itemState = create<ItemStore>()(
       try {
         const res = await listDocs("items");
         if (res.success && res.response) {
-          set({ items: res.response.docs });
+          set({ items: res.response });
           return { success: true };
         } else {
           console.error("Failed to fetch items from Firebase:", res);
@@ -29,7 +29,7 @@ const itemState = create<ItemStore>()(
         return { success: false };
       }
     },
-    saveItem: async (itemId: string, data: ListItem) => {
+    updateItem: async (itemId: string, data: ListItem) => {
       try {
         const res = await updateDoc("items", itemId, data);
         if (res.success) {

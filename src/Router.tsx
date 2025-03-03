@@ -19,7 +19,7 @@ const Router: React.FC = () => {
 		<BrowserRouter>
 			<Header />
 			<div
-				className={`mt-16 sm:max-w-[100vw] md:max-w-[650px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto mb-20 py-7 flex flex-col min-h-[82vh]`}
+				className={`my-16 sm:max-w-[100vw] md:max-w-[650px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto flex flex-col`}
 			>
 				<Routes>
 					<Route path="/" element={<Home />} />
@@ -33,6 +33,9 @@ const Router: React.FC = () => {
 					<Route path="/items" element={<ListItems />} />
 					<Route path="/items/new" element={<AddItem />} />
 					<Route path="/items/:itemId" element={<EditItem />} />
+					<Route path="/lists" element={<ListItems />} />
+					<Route path="/lists/new" element={<AddItem />} />
+					<Route path="/lists/:listId" element={<EditItem />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</div>
