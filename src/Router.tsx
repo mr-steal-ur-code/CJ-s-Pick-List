@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import EditItem from "./Pages/Item Manager/EditItem";
 import AddItem from "./Pages/Item Manager/AddItem";
 import Footer from "./components/Footer";
+import ListItems from "./Pages/Item Manager/ListItems";
 
 const Router: React.FC = () => {
 	const { isLoggedIn } = useAuth();
@@ -29,6 +30,7 @@ const Router: React.FC = () => {
 					/>
 					<Route path="/recover-password" element={<RecoverPassword />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/items" element={<ListItems />} />
 					<Route path="/items/new" element={<AddItem />} />
 					<Route path="/items/:itemId" element={<EditItem />} />
 					<Route path="*" element={<NotFound />} />

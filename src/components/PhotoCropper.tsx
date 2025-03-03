@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import Cropper from "cropperjs";
-import cookStore from "../store/userStore";
+import "cropperjs/dist/cropper.css";
+import userState from "../store/userStore";
 import toast from "react-hot-toast";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { storage } from "../firebase";
+//import { getDownloadURL, ref, uploadString } from "firebase/storage";
+//import { storage } from "../firebase";
 import Button from "./Button";
 
 type CropperProps = {
@@ -11,7 +12,7 @@ type CropperProps = {
 	onClose?: () => void;
 };
 const PhotoCropper: React.FC<CropperProps> = ({ user, onClose }) => {
-	const { saveUser } = cookStore();
+	const { saveUser } = userState();
 	const [image, setImage] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
 	const cropperRef = useRef<any>(null);
@@ -52,10 +53,10 @@ const PhotoCropper: React.FC<CropperProps> = ({ user, onClose }) => {
 			try {
 				setLoading(true);
 				const resizedDataUrl = resizedCanvas.toDataURL();
-				const storageRef = ref(storage, `avatar/${user?.id}/avatar`);
-				await uploadString(storageRef, resizedDataUrl, "data_url");
-				const downloadURL = await getDownloadURL(storageRef);
-				await saveUser(user?.id, { avatar: downloadURL });
+				//const storageRef = ref(storage, `avatar/${user?.id}/avatar`);
+				//await uploadString(storageRef, resizedDataUrl, "data_url");
+				//const downloadURL = await getDownloadURL(storageRef);
+				await saveUser(user?.id, { avatar: resizedDataUrl });
 				handleClose();
 				setTimeout(() => {
 					toast.success("Avatar Saved");
@@ -104,7 +105,7 @@ const PhotoCropper: React.FC<CropperProps> = ({ user, onClose }) => {
 					Update Avatar
 				</button>
 				{image && (
-					<div className="absolute left-0 -top-1 z-50 w-full  flex flex-col items-center">
+					<div className="fixed left-1/2 top-1/2 z-50 w-full flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2">
 						<div className="sm:w-[80vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw]">
 							<img ref={cropperRef} src={image} alt="Cropper Preview" />
 							<div className="flex flex-row justify-around p-2 bg-secondary">

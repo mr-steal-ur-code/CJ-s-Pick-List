@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const links = [
 	{ href: "items/new", name: "Add" },
-	{ href: "items/list", name: "Manage" },
+	{ href: "items", name: "Manage" },
 ];
 
 const Footer = () => {

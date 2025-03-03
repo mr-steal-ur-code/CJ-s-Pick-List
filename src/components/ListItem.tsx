@@ -24,9 +24,6 @@ const categoryIcons: Record<NonNullable<ListItem["category"]>, LucideIcon> = {
 	"": Package,
 };
 
-const getCategoryIcon = (category?: ListItem["category"]) =>
-	categoryIcons[category ?? ""] ?? Package;
-
 const unitIcons: Record<NonNullable<ListItem["unit"]>, LucideIcon> = {
 	box: Box,
 	bottle: Box,
@@ -36,17 +33,19 @@ const unitIcons: Record<NonNullable<ListItem["unit"]>, LucideIcon> = {
 	"": Package,
 };
 
+const getCategoryIcon = (category?: ListItem["category"]) =>
+	categoryIcons[category ?? ""] ?? Package;
+
 const getUnitIcon = (unit?: ListItem["unit"]) =>
 	unitIcons[unit ?? ""] ?? Package;
 
 const ListItem: React.FC<ListItemProps> = ({ item }) => {
 	const CategoryIcon = getCategoryIcon(item?.category);
-
 	const UnitIcon = getUnitIcon(item?.unit);
 
 	return (
 		<li
-			className={`flex items-center gap-3 p-3 border-b rounded shadow-sm ${
+			className={`relative flex items-center gap-3 p-3 border-b rounded shadow-sm ${
 				item?.refrigerated ? "bg-blue-100" : "bg-[rgb(var(--color-bkg2))]"
 			}`}
 		>
@@ -58,7 +57,7 @@ const ListItem: React.FC<ListItemProps> = ({ item }) => {
 			</div>
 
 			<div className="flex gap-2 items-center">
-				{item.unit && <UnitIcon className="w-5 h-5 text-gray-600" />}
+				{item.unit && <UnitIcon className="w-8 h-8 text-gray-600" />}
 				{item.refrigerated && <Snowflake className="text-blue-600 w-8 h-8" />}
 			</div>
 		</li>

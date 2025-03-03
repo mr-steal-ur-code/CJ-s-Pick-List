@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 import generateUuidv4 from "../../utils/uuidv4";
 import ListItem from "../../components/ListItem";
 import ItemForm from "../../components/ItemForm";
+import itemState from "../../store/itemStore";
 
 const AddItem = () => {
-	const [items, setItems] = useState<ListItem[]>([]);
+	const { createItem } = itemState();
+	const [recentItems, setRecentItems] = useState<ListItem[]>([]);
 	const listRef = useRef<HTMLUListElement | null>(null);
 
 	const addItem = (item: ListItem) => {
@@ -17,7 +19,8 @@ const AddItem = () => {
 			location: item?.location || "",
 		};
 
-		setItems([...items, newItem]);
+		setRecentItems([...recentItems, newItem]);
+		createItem(item);
 	};
 
 	return (
@@ -28,8 +31,8 @@ const AddItem = () => {
 					Recently added
 				</h5>
 				<ul ref={listRef} className="mt-4 border rounded bg-gray-100 flex-1">
-					{items?.length ? (
-						items?.map?.((item) => (
+					{recentItems?.length ? (
+						recentItems?.map?.((item) => (
 							<ListItem key={generateUuidv4()} item={item}></ListItem>
 						))
 					) : (

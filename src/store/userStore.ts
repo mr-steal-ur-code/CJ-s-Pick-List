@@ -6,7 +6,7 @@ type UserStore = {
   user: User;
   setUser: (data: any) => { success?: boolean };
   saveUser: (userId: string, data: User) => { success?: boolean };
-  clearCache: () => void;
+  clearUserCache: () => void;
 }
 
 const userState = create<UserStore>()(
@@ -34,9 +34,9 @@ const userState = create<UserStore>()(
         return { success: false }
       }
     },
-    clearCache: async () => set({ user: {} })
+    clearUserCache: async () => set({ user: {} })
   }), {
-    name: "pick-list-store",
+    name: "pick-list-user-store",
     storage: createJSONStorage(() => localStorage),
   })
 );

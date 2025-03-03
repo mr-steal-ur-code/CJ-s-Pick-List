@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { findDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
+import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
 
 type ItemStore = {
   items: ListItem[];
   setItems: () => Promise<{ success?: boolean }>;
   saveItem: (itemId: string, data: ListItem) => Promise<{ success?: boolean }>;
-  clearCache: () => void;
+  createItem: (data: ListItem) => Promise<{ success: boolean }>,
+  deleteItem: (itemId: string) => Promise<{ success: boolean }>;
+  clearItemCache: () => void;
 }
 
 const itemState = create<ItemStore>()(
@@ -48,9 +50,36 @@ const itemState = create<ItemStore>()(
         return { success: false };
       }
     },
-    clearCache: () => set({ items: [] })
+    createItem: async (data: ListItem) => {
+      try {
+        const doc = await createDoc("items", data);
+        if (doc?.success && doc?.response?.id) {
+          const newItem = { ...doc?.response, id: doc.response?.id };
+          set((state) => ({ items: [...state.items, newItem] }));
+          return { success: true };
+        }
+      } catch (error) {
+        console.log("error adding Item", error);
+      }
+      return { success: false }
+    },
+    deleteItem: async (itemId: string) => {
+      try {
+        const res = await killDoc("items", itemId);
+        if (res.success) {
+          set((state) => ({
+            items: state.items.filter((item) => item.id !== itemId),
+          }));
+          return { success: true };
+        }
+      } catch (error) {
+        console.log("Error deleting item", error);
+      }
+      return { success: false };
+    },
+    clearItemCache: () => set({ items: [] })
   }), {
-    name: "pick-list-store",
+    name: "pick-list-items-store",
     storage: createJSONStorage(() => localStorage),
   })
 );

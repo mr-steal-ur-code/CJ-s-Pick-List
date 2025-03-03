@@ -11,6 +11,8 @@ const EditItem: React.FC = () => {
 
 	useEffect(() => {
 		if (items) {
+			console.log("items:", items);
+
 			const foundItem = items.find((item) => item?.id === itemId);
 			if (foundItem) setCurrentItem(foundItem);
 		}
