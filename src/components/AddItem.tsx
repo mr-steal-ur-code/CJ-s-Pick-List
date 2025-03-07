@@ -1,5 +1,5 @@
-import ItemForm from "../../components/ItemForm";
-import itemState from "../../store/itemStore";
+import itemState from "../store/itemStore";
+import ItemForm from "./ItemForm";
 
 const AddItem = () => {
 	const { createItem } = itemState();

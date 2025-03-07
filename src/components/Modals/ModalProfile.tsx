@@ -1,7 +1,7 @@
-import SuspenseLoader from "./SuspenseLoader";
-import { formatTimestamp } from "../utils/formatTimestamp";
-import PhotoCropper from "./PhotoCropper";
-import { useAuth } from "../context/AuthContext";
+import SuspenseLoader from "../SuspenseLoader";
+import { formatTimestamp } from "../../utils/formatTimestamp";
+import PhotoCropper from "../PhotoCropper";
+import { useAuth } from "../../context/AuthContext";
 import { lazy, useRef } from "react";
 import { Link } from "react-router-dom";
 

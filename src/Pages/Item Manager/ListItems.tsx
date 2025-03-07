@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom";
 import {
 	ChevronDown,
 	ChevronUp,
 	List,
 	MapPin,
-	Plus,
 	Search,
 	Snowflake,
 } from "lucide-react";
 import ListItem from "../../components/ListItem";
 import itemState from "../../store/itemStore";
 import { useState } from "react";
+import ModalItemAdd from "../../components/Modals/ModalItemAdd";
+import Button from "../../components/Button";
 
 const categories = ["grocery", "work", "household", "event", "other", ""];
 const locations = ["store", "online", ""];
@@ -20,10 +20,11 @@ const ListItems = () => {
 	const [openLocation, setOpenLocation] = useState(false);
 	const [openCategory, setOpenCategory] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [toggleModal, setToggleModal] = useState(false);
+	const [clickDisabled, setClickDisabled] = useState(false);
 	const [categoryFilter, setCategoryFilter] = useState("");
 	const [locationFilter, setLocationFilter] = useState("");
 	const [refrigeratedFilter, setRefrigeratedFilter] = useState("");
-
 	const [sortField, setSortField] = useState<
 		"name" | "category" | "location" | "refrigerated"
 	>("name");
@@ -62,6 +63,12 @@ const ListItems = () => {
 				? valueA.toString().localeCompare(valueB.toString())
 				: valueB.toString().localeCompare(valueA.toString());
 		});
+
+	const handleDebounceClose = () => {
+		setToggleModal(false);
+		setClickDisabled(true);
+		setTimeout(() => setClickDisabled(false), 300);
+	};
 
 	return (
 		<>
@@ -236,22 +243,20 @@ const ListItems = () => {
 				</div>
 			</div>
 
-			<div className="flex flex-row items-center gap-12 justify-end">
-				<Link
-					to="/items/new"
-					className="flex flex-col items-center p-2 text-sm font-medium hover:underline"
-				>
-					<Plus />
-					Add
-				</Link>
+			<div className="mb-2 flex flex-row items-center gap-12 justify-end">
+				<Button
+					type="outline"
+					text="Add"
+					onClick={() => !clickDisabled && setToggleModal(true)}
+				/>
 			</div>
+			<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
 			{filteredItems?.map?.((item) => (
-				<a key={item?.id} href={`/items/${item?.id}`}>
-					<ListItem
-						className="hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
-						item={item}
-					/>
-				</a>
+				<ListItem
+					key={item?.id}
+					className="hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
+					item={item}
+				/>
 			))}
 		</>
 	);

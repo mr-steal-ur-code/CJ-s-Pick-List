@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @theme {
-  --color-primary: rgb(170, 50, 40);
+  --color-primary: rgb(43, 126, 254);
   --color-tertiary: rgb(0, 120, 120);
   --color-glass: rgba(0, 0, 0, 0.1);
   --color-success: rgb(75, 160, 50);
@@ -37,6 +37,21 @@
 
   body {
     @apply bg-[rgb(var(--color-bkg))] text-[rgb(var(--color-content))] font-sans font-medium;
+  }
+
+  select {
+    @apply text-xl py-2 mb-6 border-b-2 border-[rgb(var(--color-secondary))] transition-all duration-200 outline-none;
+  }
+
+  select:focus {
+    background-color: rgb(var(--color-bkg));
+    color: rgb(var(--color-content));
+    border-color: var(--color-primary);
+  }
+
+  select option {
+    background-color: rgb(var(--color-bkg));
+    color: rgb(var(--color-content));
   }
 
   h1 {

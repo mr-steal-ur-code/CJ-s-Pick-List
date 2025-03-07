@@ -7,8 +7,6 @@ import NotFound from "./Pages/Not Found/NotFound";
 import SignIn from "./Pages/Auth/SignIn";
 import { useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
-import EditItem from "./Pages/Item Manager/EditItem";
-import AddItem from "./Pages/Item Manager/AddItem";
 import Footer from "./components/Footer";
 import ListItems from "./Pages/Item Manager/ListItems";
 
@@ -31,11 +29,9 @@ const Router: React.FC = () => {
 					<Route path="/recover-password" element={<RecoverPassword />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/items" element={<ListItems />} />
-					<Route path="/items/new" element={<AddItem />} />
-					<Route path="/items/:itemId" element={<EditItem />} />
 					<Route path="/lists" element={<ListItems />} />
-					<Route path="/lists/new" element={<AddItem />} />
-					<Route path="/lists/:listId" element={<EditItem />} />
+					<Route path="/lists/new" element={<NotFound />} />
+					<Route path="/lists/:listId" element={<NotFound />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</div>

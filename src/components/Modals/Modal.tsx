@@ -57,21 +57,23 @@ const Modal = forwardRef<ModalHandle, ModalProps>(
 
 		const modalContent = (
 			<div
-				className={`fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black z-50 ${bgAnimateClass}`}
+				className={`fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50 ${bgAnimateClass}`}
 			>
 				<div
 					ref={modalRef}
-					className={`relative p-4 bg-[rgb(var(--color-bkg2))] border-2 border-white rounded-md
-          sm:w-[85vw] md:w-[450px] lg:w-[600px] ${animateClass}`}
+					className={`relative p-4 bg-[rgb(var(--color-bkg2))] border-2 border-white rounded-md sm:w-[85vw] md:w-[450px] lg:w-[600px] max-h-[95vh] flex flex-col ${animateClass}`}
 				>
-					{children}
+					<div className="flex-grow overflow-auto p-2">{children}</div>
+
 					{closeButton && (
-						<button
-							className="absolute right-0 bottom-0 p-2 hover:text-primary cursor-pointer"
-							onClick={dismiss}
-						>
-							Dismiss
-						</button>
+						<div className="pt-2 border-t border-white flex justify-end">
+							<button
+								className="p-2 hover:text-[rgb(var(--color-danger))] cursor-pointer"
+								onClick={dismiss}
+							>
+								Dismiss
+							</button>
+						</div>
 					)}
 				</div>
 			</div>

@@ -5,7 +5,7 @@ import AppToaster from "./Toast/AppToaster";
 import bookStore from "../store/userStore";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import ModalProfile from "./ModalProfile";
+import ModalProfile from "./Modals/ModalProfile";
 import toast from "react-hot-toast";
 import Button from "./Button";
 

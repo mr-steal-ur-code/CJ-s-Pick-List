@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import ListItem from "../../components/ListItem";
-import itemState from "../../store/itemStore";
-import { useParams } from "react-router-dom";
-import ItemForm from "../../components/ItemForm";
+import itemState from "../store/itemStore";
+import ItemForm from "./ItemForm";
+import ListItem from "./ListItem";
 
-const EditItem: React.FC = () => {
-	const { itemId } = useParams<{ itemId: string }>();
+interface EditItemProps {
+	itemId: string;
+}
+const EditItem: React.FC<EditItemProps> = ({ itemId }) => {
 	const { items, updateItem } = itemState();
 	const [currentItem, setCurrentItem] = useState<ListItem>({});
 

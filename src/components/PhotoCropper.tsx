@@ -108,8 +108,9 @@ const PhotoCropper: React.FC<CropperProps> = ({ user, onClose }) => {
 					<div className="fixed left-1/2 top-1/2 z-50 w-full flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2">
 						<div className="sm:w-[80vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw]">
 							<img ref={cropperRef} src={image} alt="Cropper Preview" />
-							<div className="flex flex-row justify-around p-2 bg-secondary">
+							<div className="flex flex-row justify-around p-2 bg-[rgb(var(--color-bkg2))]">
 								<Button
+									color="text-[rgb(var(--color-danger))]"
 									type="cancel"
 									text="Cancel"
 									onClick={() => handleClose()}
