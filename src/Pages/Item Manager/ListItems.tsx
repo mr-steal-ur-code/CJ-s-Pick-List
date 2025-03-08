@@ -13,7 +13,7 @@ import ModalItemAdd from "../../components/Modals/ModalItemAdd";
 import Button from "../../components/Button";
 
 const categories = ["grocery", "work", "household", "event", "other", ""];
-const locations = ["store", "online", ""];
+const locations = ["in-store", "online", ""];
 
 const ListItems = () => {
 	const items = itemState((state) => state.items);

@@ -1,10 +1,16 @@
+import { useState } from "react";
 import itemState from "../store/itemStore";
 import ItemForm from "./ItemForm";
 
-const AddItem = () => {
+interface AddItemProps {
+	onSubmit?: () => void;
+}
+const AddItem: React.FC<AddItemProps> = ({ onSubmit }) => {
 	const { createItem } = itemState();
+	const [error, setError] = useState("");
 
-	const addItem = (item: ListItem) => {
+	const addItem = async (item: ListItem) => {
+		setError("");
 		const newItem: ListItem = {
 			name: item?.name || "",
 			refrigerated: item?.refrigerated || false,
@@ -14,12 +20,15 @@ const AddItem = () => {
 			location: item?.location || "",
 		};
 
-		createItem(newItem);
+		const res = await createItem(newItem);
+		if (res.success) {
+			onSubmit && onSubmit();
+		} else setError("Error Creating Item");
 	};
 
 	return (
 		<>
-			<ItemForm onSubmit={addItem} />
+			<ItemForm error={error} onSubmit={(e) => addItem(e)} />
 		</>
 	);
 };

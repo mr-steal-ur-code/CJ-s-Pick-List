@@ -6,16 +6,17 @@ import React, {
 	forwardRef,
 } from "react";
 import ReactDOM from "react-dom";
+import Button from "../Button";
 
 type ModalProps = {
 	isOpen: boolean;
 	onClose: () => void;
 	children: React.ReactNode;
-	closeButton?: boolean;
+	footerBtn?: React.ReactNode;
 };
 
 const Modal = forwardRef<ModalHandle, ModalProps>(
-	({ isOpen, onClose, children, closeButton }, ref) => {
+	({ isOpen, onClose, children, footerBtn }, ref) => {
 		const modalRef = useRef<HTMLDivElement>(null);
 		const [animateClass, setAnimateClass] = useState("");
 		const [bgAnimateClass, setBgAnimateClass] = useState("");
@@ -65,16 +66,15 @@ const Modal = forwardRef<ModalHandle, ModalProps>(
 				>
 					<div className="flex-grow overflow-auto p-2">{children}</div>
 
-					{closeButton && (
-						<div className="pt-2 border-t border-white flex justify-end">
-							<button
-								className="p-2 hover:text-[rgb(var(--color-danger))] cursor-pointer"
-								onClick={dismiss}
-							>
-								Dismiss
-							</button>
-						</div>
-					)}
+					<div className="border-t border-white flex justify-between items-center p-2">
+						<div>{footerBtn}</div>
+						<Button
+							type="text"
+							className="p-2 hover:text-[rgb(var(--color-danger))] cursor-pointer ml-auto"
+							onClick={dismiss}
+							text="Dismiss"
+						/>
+					</div>
 				</div>
 			</div>
 		);

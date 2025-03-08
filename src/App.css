@@ -153,7 +153,7 @@
 .modal-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.5s ease, transform 0.4s ease;
+  transition: opacity 0.6s ease, transform 0.5s ease;
 }
 
 .modal-exit {
@@ -164,7 +164,7 @@
 .modal-exit-active {
   opacity: 0;
   transform: translateY(50vh);
-  transition: opacity 0.5s ease, transform 0.4s ease;
+  transition: opacity .8s ease, transform 0.5s ease;
 }
 
 .modal-bg-enter {
@@ -173,7 +173,7 @@
 
 .modal-bg-enter-active {
   background-color: rgba(0, 0, 0, .8);
-  transition: background-color .5s ease;
+  transition: background-color .6s ease;
 }
 
 .modal-bg-exit {
@@ -182,7 +182,7 @@
 
 .modal-bg-exit-active {
   background-color: transparent;
-  transition: background-color .5s ease;
+  transition: background-color .6s ease;
 }
 
 .scale {

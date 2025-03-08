@@ -1,28 +1,33 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import itemState from "../store/itemStore";
 import ItemForm from "./ItemForm";
 import ListItem from "./ListItem";
 
 interface EditItemProps {
 	itemId: string;
+	onSubmit?: () => void;
 }
-const EditItem: React.FC<EditItemProps> = ({ itemId }) => {
+const EditItem: React.FC<EditItemProps> = ({ itemId, onSubmit }) => {
 	const { items, updateItem } = itemState();
-	const [currentItem, setCurrentItem] = useState<ListItem>({});
+	const [error, setError] = useState("");
 
-	useEffect(() => {
-		if (items) {
-			const foundItem = items.find((item) => item?.id === itemId);
-			if (foundItem) setCurrentItem(foundItem);
-		}
-	}, [itemId, items]);
+	const currentItem = items.find((item) => item?.id === itemId);
+
+	const handleSubmit = async (e) => {
+		setError("");
+		const res = await updateItem(itemId, e);
+		if (res.success) {
+			onSubmit && onSubmit();
+		} else setError("Error Updating Item");
+	};
 
 	return (
 		<div className="p-4 max-w-md mx-auto flex flex-col md:flex-row gap-4 w-full">
 			<ListItem item={currentItem} />
 			<ItemForm
+				error={error}
 				listItem={currentItem}
-				onSubmit={(e) => updateItem(itemId!, e)}
+				onSubmit={(e) => handleSubmit(e)}
 			/>
 		</div>
 	);

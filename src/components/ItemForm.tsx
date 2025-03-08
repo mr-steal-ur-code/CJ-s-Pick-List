@@ -1,30 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
+import ErrorMessage from "./ErrorMessage";
 
 interface ItemFormProps {
 	onSubmit: (item: ListItem) => void;
 	listItem?: ListItem;
+	error?: string;
 }
 
-const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
+const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem, error }) => {
 	const [item, setItem] = useState<ListItem>({
-		name: "",
-		refrigerated: false,
-		category: "",
-		unit: "",
-		tags: "",
-		location: "",
+		id: listItem?.id || "",
+		name: listItem?.name || "",
+		refrigerated: listItem?.refrigerated || false,
+		category: listItem?.category || "",
+		unit: listItem?.unit || "",
+		tags: listItem?.tags || "",
+		location: listItem?.location || "",
 	});
-
-	useEffect(() => {
-		if (listItem) {
-			setItem((prev) => ({
-				...prev,
-				...listItem,
-			}));
-		}
-	}, [listItem]);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -39,17 +33,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
 
 	const handleSubmit = () => {
 		if (!item?.name) return alert("Item requires a name");
-		if (onSubmit) onSubmit(item);
-		if (!listItem) {
-			setItem({
-				name: "",
-				refrigerated: false,
-				category: "",
-				unit: "",
-				tags: "",
-				location: "",
-			});
-		}
+		onSubmit && onSubmit(item);
 	};
 
 	return (
@@ -79,7 +63,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
 						name="refrigerated"
 						checked={item?.refrigerated}
 						onChange={handleChange}
-						className="w-5 h-5 text-blue-500 focus:ring-[rgb(var(--color-secondary))] rounded-sm rounded-md"
+						className="w-5 h-5 text-blue-500 focus:ring-[rgb(var(--color-secondary))] "
 					/>
 					Refrigerated
 				</label>
@@ -94,14 +78,11 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
 				<option value="bag">Bag</option>
 			</select>
 
-			<Input
-				labelText="Location"
-				labelType="floating"
-				type="text"
-				name="location"
-				value={item?.location}
-				onChange={handleChange}
-			/>
+			<select name="location" value={item?.location} onChange={handleChange}>
+				<option value="">Select Location</option>
+				<option value="in-store">In Store</option>
+				<option value="online">Online</option>
+			</select>
 
 			<Input
 				labelText="Tags (comma-separated)"
@@ -111,10 +92,11 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem }) => {
 				value={item?.tags}
 				onChange={handleChange}
 			/>
-
+			{error && <ErrorMessage error={error} />}
 			<Button
 				onClick={handleSubmit}
 				text={item?.id ? "Save Changes" : "Add Item"}
+				className="w-full"
 			/>
 		</div>
 	);

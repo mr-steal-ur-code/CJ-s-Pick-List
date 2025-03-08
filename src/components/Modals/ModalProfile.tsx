@@ -21,7 +21,7 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 
 	return (
 		<SuspenseLoader>
-			<Modal closeButton ref={modalRef} isOpen={isOpen} onClose={onClose}>
+			<Modal ref={modalRef} isOpen={isOpen} onClose={onClose}>
 				<div className="py-2">
 					{isLoggedIn ? (
 						<div className="flex flex-col gap-6">

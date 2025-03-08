@@ -8,12 +8,14 @@ type ModalItemAddProps = {
 };
 const Modal = lazy(() => import("./Modal"));
 const ModalProfile: React.FC<ModalItemAddProps> = ({ isOpen, onClose }) => {
-	const modalRef = useRef<ModalHandle>(null);
-
+	const modalRef = useRef(null);
+	const handleSubmit = () => {
+		onClose && modalRef?.current?.dismiss();
+	};
 	return (
 		<SuspenseLoader>
-			<Modal closeButton ref={modalRef} isOpen={isOpen} onClose={onClose}>
-				<AddItem />
+			<Modal ref={modalRef} isOpen={isOpen} onClose={onClose}>
+				<AddItem onSubmit={handleSubmit} />
 			</Modal>
 		</SuspenseLoader>
 	);

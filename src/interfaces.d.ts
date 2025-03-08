@@ -58,7 +58,7 @@ type ListItem = {
   category?: "grocery" | "work" | "household" | "event" | "other" | "";
   unit?: "box" | "bottle" | "pack" | "case" | "bag" | "";
   tags?: string;
-  location?: "store" | "online" | "";
+  location?: "in-store" | "online" | "";
 }
 
 type List = {

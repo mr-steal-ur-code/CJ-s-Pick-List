@@ -57,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({
 
 	switch (type) {
 		case "cancel":
-			buttonClass = `${commonClasses} outline outline-danger outline-3`;
+			buttonClass = `${commonClasses} outline outline-[rgb(var(--color-danger))] outline-3`;
 			break;
 		case "reset":
 			buttonClass = `${commonClasses} outline outline-tertiary outline-3`;

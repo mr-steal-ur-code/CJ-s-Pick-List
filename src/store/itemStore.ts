@@ -52,9 +52,9 @@ const itemState = create<ItemStore>()(
     },
     createItem: async (data: ListItem) => {
       try {
-        const doc = await createDoc("items", data);
-        if (doc?.success && doc?.response?.id) {
-          const newItem = { ...doc?.response, id: doc.response?.id };
+        const res = await createDoc("items", data);
+        if (res?.success && res?.doc?.id) {
+          const newItem = res?.doc;
           set((state) => ({ items: [...state.items, newItem] }));
           return { success: true };
         }
