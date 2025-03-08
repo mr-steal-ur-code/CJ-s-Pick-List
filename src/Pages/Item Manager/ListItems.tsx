@@ -253,6 +253,7 @@ const ListItems = () => {
 			<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
 			{filteredItems?.map?.((item) => (
 				<ListItem
+					isEditable
 					key={item?.id}
 					className="hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
 					item={item}

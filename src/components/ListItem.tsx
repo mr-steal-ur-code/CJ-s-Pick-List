@@ -16,6 +16,7 @@ import { useState } from "react";
 type ListItemProps = {
 	item: ListItem;
 	className?: string;
+	isEditable?: boolean;
 };
 
 const categoryIcons: Record<NonNullable<ListItem["category"]>, LucideIcon> = {
@@ -42,7 +43,7 @@ const getCategoryIcon = (category?: ListItem["category"]) =>
 const getUnitIcon = (unit?: ListItem["unit"]) =>
 	unitIcons[unit ?? ""] ?? Package;
 
-const ListItem: React.FC<ListItemProps> = ({ item, className }) => {
+const ListItem: React.FC<ListItemProps> = ({ item, className, isEditable }) => {
 	const [toggleModal, setToggleModal] = useState(false);
 	const [clickDisabled, setClickDisabled] = useState(false);
 	const CategoryIcon = getCategoryIcon(item?.category);
@@ -62,8 +63,10 @@ const ListItem: React.FC<ListItemProps> = ({ item, className }) => {
 
 	return (
 		<li
-			onClick={handleToggleModal}
-			className={`${className} cursor-pointer relative flex items-center gap-3 p-3 shadow-sm border-1 bg-[rgb(var(--color-accent-1))] border-[rgb(var(--color-accent-1))]`}
+			onClick={isEditable && handleToggleModal}
+			className={`${className} ${
+				isEditable ? "cursor-pointer" : ""
+			} relative flex items-center gap-3 p-3 shadow-sm border-1 bg-[rgb(var(--color-accent-1))] border-[rgb(var(--color-accent-1))]`}
 		>
 			<CategoryIcon className="w-7 h-7 text-gray-500" />
 
