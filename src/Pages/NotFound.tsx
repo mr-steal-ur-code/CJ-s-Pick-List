@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+	document.title = "404 Not Found";
 	const navigate = useNavigate();
 	const [countdown, setCountdown] = useState(12);
 

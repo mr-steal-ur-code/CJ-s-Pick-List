@@ -4,7 +4,7 @@ import { Home, Package, List } from "lucide-react";
 const links = [
 	{ href: "/", name: "Home", icon: <Home /> },
 	{ href: "items", name: "Items", icon: <Package /> },
-	{ href: "list", name: "Lists", icon: <List /> },
+	{ href: "lists", name: "Lists", icon: <List /> },
 ];
 
 const Footer = () => {

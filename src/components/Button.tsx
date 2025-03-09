@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 type ButtonProps = {
 	text?: string;
 	textSize?: "sm" | "md" | "lg";
@@ -21,6 +23,12 @@ type ButtonProps = {
 		| "animate-ping"
 		| "animate-pulse"
 		| "animate-bounce";
+
+	href?: string;
+	navigateOptions?: {
+		replace?: boolean;
+		state?: any;
+	};
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -35,7 +43,10 @@ const Button: React.FC<ButtonProps> = ({
 	ariaLabel,
 	color,
 	animation,
+	href,
+	navigateOptions,
 }) => {
+	const navigate = useNavigate();
 	let buttonClass: string;
 	const commonClasses = `${className ? className : ""} ${
 		textSize === "sm"
@@ -73,29 +84,37 @@ const Button: React.FC<ButtonProps> = ({
 			break;
 	}
 
+	const handleClick = () => {
+		if (disabled || loading) return;
+
+		if (href) {
+			navigate(href, navigateOptions);
+		} else if (onClick) {
+			onClick();
+		}
+	};
+
 	return (
-		<>
-			<button
-				type={submit ? "submit" : "button"}
-				disabled={disabled}
-				aria-label={ariaLabel}
-				className={buttonClass}
-				onClick={() => !disabled && !loading && onClick && onClick()}
-			>
-				<div className="flex justify-center gap-2 mx-auto">
-					{loading && (
-						<img
-							className={`${animation || "animate-spin"}`}
-							src="/assets/svg/spinner.svg"
-							alt="load"
-							width={30}
-							height={30}
-						/>
-					)}
-					{text || "Submit"}
-				</div>
-			</button>
-		</>
+		<button
+			type={submit ? "submit" : "button"}
+			disabled={disabled}
+			aria-label={ariaLabel}
+			className={buttonClass}
+			onClick={handleClick}
+		>
+			<div className="flex justify-center gap-2 mx-auto">
+				{loading && (
+					<img
+						className={`${animation || "animate-spin"}`}
+						src="/assets/svg/spinner.svg"
+						alt="load"
+						width={30}
+						height={30}
+					/>
+				)}
+				{text || "Submit"}
+			</div>
+		</button>
 	);
 };
 

@@ -29,10 +29,6 @@ type User = {
   zip?: string;
 }
 
-type ModalHandle = {
-  dismiss: () => void;
-};
-
 type WhereFilterOp =
   | "<"
   | "<="
@@ -59,6 +55,7 @@ type ListItem = {
   unit?: "box" | "bottle" | "pack" | "case" | "bag" | "";
   tags?: string;
   location?: "in-store" | "online" | "";
+  completed?: boolean;
 }
 
 type List = {
@@ -66,7 +63,7 @@ type List = {
   name?: string;
   description?: string;
   createdAt?: string;
-  upstringdAt?: Date;
+  updatedAt?: string;
   items?: ListItem[];
   category?: "grocery" | "work" | "household" | "event" | "other";
 }

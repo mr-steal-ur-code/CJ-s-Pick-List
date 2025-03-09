@@ -6,16 +6,17 @@ import {
 	Search,
 	Snowflake,
 } from "lucide-react";
-import ListItem from "../../components/ListItem";
-import itemState from "../../store/itemStore";
+import itemState from "../store/itemStore";
 import { useState } from "react";
-import ModalItemAdd from "../../components/Modals/ModalItemAdd";
-import Button from "../../components/Button";
+import Button from "../components/Button";
+import ModalItemAdd from "../components/Modals/ModalItemAdd";
+import ListItem from "../components/ListItem";
 
 const categories = ["grocery", "work", "household", "event", "other", ""];
 const locations = ["in-store", "online", ""];
 
-const ListItems = () => {
+const PageItems = () => {
+	document.title = "Iten Manager";
 	const items = itemState((state) => state.items);
 	const [openLocation, setOpenLocation] = useState(false);
 	const [openCategory, setOpenCategory] = useState(false);
@@ -71,7 +72,7 @@ const ListItems = () => {
 	};
 
 	return (
-		<>
+		<div className="fade-in">
 			<div className="p-2 flex flex-col sm:flex-row items-start gap-2 w-full">
 				<div className="flex flex-row items-center justify-center gap-2 w-full">
 					<button
@@ -252,15 +253,10 @@ const ListItems = () => {
 			</div>
 			<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
 			{filteredItems?.map?.((item) => (
-				<ListItem
-					isEditable
-					key={item?.id}
-					className="hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
-					item={item}
-				/>
+				<ListItem isEditable key={item?.id} item={item} />
 			))}
-		</>
+		</div>
 	);
 };
 
-export default ListItems;
+export default PageItems;

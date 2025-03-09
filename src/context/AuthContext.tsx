@@ -11,6 +11,7 @@ import handleUserDocument from "../actions/handleUserDoc";
 import userState from "../store/userStore";
 import { auth } from "../firebase";
 import itemState from "../store/itemStore";
+import listState from "../store/listStore";
 
 type AuthContextType = {
 	isLoggedIn: boolean | undefined;
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextType | any>("");
 export const AuthContextProvider = ({ children }: { children: any }) => {
 	const { setUser, clearUserCache } = userState();
 	const { setItems, clearItemCache } = itemState();
+	const { setLists, clearListCache } = listState();
 
 	const [isMember, setIsMember] = useState<boolean | undefined>(undefined);
 	const [isAdmin, setIsAdmin] = useState<boolean | undefined>(undefined);
@@ -116,6 +118,7 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 		try {
 			await clearUserCache();
 			await clearItemCache();
+			await clearListCache();
 			auth?.signOut();
 		} catch (error: any) {
 			console.error("Error signing out", error);
@@ -147,6 +150,7 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 				if (userDocRes?.success) {
 					await setUser(userDocRes?.response);
 					setItems();
+					setLists();
 				}
 			}
 		});

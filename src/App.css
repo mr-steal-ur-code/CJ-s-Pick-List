@@ -37,6 +37,14 @@
 
   body {
     @apply bg-[rgb(var(--color-bkg))] text-[rgb(var(--color-content))] font-sans font-medium;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   select {
@@ -71,49 +79,49 @@
   }
 
   :root {
-    --color-bkg: 245 245 250;
-    --color-bkg2: 225 230 240;
-    --color-secondary: 100 140 250;
+    --color-bkg: 245, 245, 250;
+    --color-bkg2: 225, 230, 240;
+    --color-secondary: 100, 140, 250;
     --color-accent-1: 210, 230, 255;
     --color-accent-2: 160, 190, 250;
-    --color-content: 75 75 75;
+    --color-content: 75, 75, 75;
     --color-hover-bkg: 0, 0, 0, .2;
-    --color-danger: 200 0 50;
+    --color-danger: 200, 0, 50;
   }
 
   @media (prefers-color-scheme:dark) {
     :root {
-      --color-bkg: 15 15 25;
-      --color-bkg2: 25 25 45;
-      --color-secondary: 0 255 180;
+      --color-bkg: 15, 15, 25;
+      --color-bkg2: 25, 25, 45;
+      --color-secondary: 0, 255, 180;
       --color-accent-1: 40, 70, 120;
       --color-accent-2: 25, 50, 100;
-      --color-content: 240 240 240;
+      --color-content: 240, 240, 240;
       --color-hover-bkg: 255, 255, 255, .2;
-      --color-danger: 150 40 60;
+      --color-danger: 150, 40, 60;
     }
   }
 
   [data-theme="light"] {
-    --color-bkg: 245 245 250;
-    --color-bkg2: 225 230 240;
-    --color-secondary: 100 140 250;
+    --color-bkg: 245, 245, 250;
+    --color-bkg2: 225, 230, 240;
+    --color-secondary: 100, 140, 250;
     --color-accent-1: 210, 230, 255;
     --color-accent-2: 160, 190, 250;
-    --color-content: 75 75 75;
+    --color-content: 75, 75, 75;
     --color-hover-bkg: 0, 0, 0, .2;
-    --color-danger: 200 0 50;
+    --color-danger: 200, 0, 50;
   }
 
   [data-theme="dark"] {
-    --color-bkg: 15 15 25;
-    --color-bkg2: 25 25 45;
-    --color-secondary: 0 255 180;
+    --color-bkg: 15, 15, 25;
+    --color-bkg2: 25, 25, 45;
+    --color-secondary: 0, 255, 180;
     --color-accent-1: 40, 70, 120;
     --color-accent-2: 25, 50, 100;
-    --color-content: 240 240 240;
+    --color-content: 240, 240, 240;
     --color-hover-bkg: 255, 255, 255, .2;
-    --color-danger: 150 40 60;
+    --color-danger: 150, 40, 60;
   }
 }
 
