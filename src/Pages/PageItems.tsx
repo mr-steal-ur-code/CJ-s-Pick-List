@@ -14,8 +14,20 @@ import ListItem from "../components/ListItem";
 
 const categories = ["grocery", "work", "household", "event", "other", ""];
 const locations = ["in-store", "online", ""];
-
-const PageItems = () => {
+interface PageItemProps {
+	isMakingList?: boolean;
+	children?: React.ReactNode;
+	onItemClick?: (item: ListItem) => void;
+	loading?: boolean;
+	inListItemIds?: string[];
+}
+const PageItems: React.FC<PageItemProps> = ({
+	isMakingList,
+	children,
+	onItemClick,
+	loading,
+	inListItemIds,
+}) => {
 	document.title = "Iten Manager";
 	const items = itemState((state) => state.items);
 	const [openLocation, setOpenLocation] = useState(false);
@@ -51,6 +63,7 @@ const PageItems = () => {
 				refrigeratedFilter === "" ||
 				String(item.refrigerated) === refrigeratedFilter
 		)
+		?.filter((item) => !isMakingList || !inListItemIds?.includes(item.id))
 		?.sort((a, b) => {
 			let valueA = a[sortField] ?? "";
 			let valueB = b[sortField] ?? "";
@@ -243,18 +256,30 @@ const PageItems = () => {
 					</label>
 				</div>
 			</div>
-
-			<div className="mb-2 flex flex-row items-center gap-12 justify-end">
-				<Button
-					type="outline"
-					text="Add"
-					onClick={() => !clickDisabled && setToggleModal(true)}
-				/>
+			{isMakingList && children}
+			{!isMakingList && (
+				<>
+					<div className="mb-2 flex flex-row items-center gap-12 justify-end">
+						<Button
+							type="outline"
+							text="Add"
+							onClick={() => !clickDisabled && setToggleModal(true)}
+						/>
+					</div>
+					<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
+				</>
+			)}
+			<div className={loading ? "pointer-events-none opacity-50" : ""}>
+				{filteredItems?.map?.((item) => (
+					<ListItem
+						canToggle={isMakingList}
+						onToggleComplete={() => onItemClick(item)}
+						isEditable={!isMakingList}
+						key={item?.id}
+						item={item}
+					/>
+				))}
 			</div>
-			<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
-			{filteredItems?.map?.((item) => (
-				<ListItem isEditable key={item?.id} item={item} />
-			))}
 		</div>
 	);
 };

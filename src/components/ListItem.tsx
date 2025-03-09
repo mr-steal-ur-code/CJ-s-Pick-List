@@ -17,6 +17,8 @@ type ListItemProps = {
 	item: ListItem;
 	className?: string;
 	isEditable?: boolean;
+	canToggle?: boolean;
+	onToggleComplete?: () => void;
 };
 
 const categoryIcons: Record<NonNullable<ListItem["category"]>, LucideIcon> = {
@@ -43,7 +45,13 @@ const getCategoryIcon = (category?: ListItem["category"]) =>
 const getUnitIcon = (unit?: ListItem["unit"]) =>
 	unitIcons[unit ?? ""] ?? Package;
 
-const ListItem: React.FC<ListItemProps> = ({ item, className, isEditable }) => {
+const ListItem: React.FC<ListItemProps> = ({
+	item,
+	className,
+	isEditable,
+	canToggle,
+	onToggleComplete,
+}) => {
 	const [toggleModal, setToggleModal] = useState(false);
 	const [clickDisabled, setClickDisabled] = useState(false);
 	const CategoryIcon = getCategoryIcon(item?.category);
@@ -63,9 +71,15 @@ const ListItem: React.FC<ListItemProps> = ({ item, className, isEditable }) => {
 
 	return (
 		<li
-			onClick={isEditable && handleToggleModal}
+			onClick={
+				isEditable ? handleToggleModal : onToggleComplete && onToggleComplete
+			}
 			className={`${className} ${
-				isEditable ? "cursor-pointer" : ""
+				isEditable || (canToggle && !item?.completed)
+					? "cursor-pointer hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
+					: item?.completed
+					? "bg-gray-100 line-through text-gray-500"
+					: ""
 			} relative flex items-center gap-3 p-3 shadow-sm border-1 bg-[rgb(var(--color-accent-1))] border-[rgb(var(--color-accent-1))]`}
 		>
 			<CategoryIcon className="w-7 h-7 text-gray-500" />

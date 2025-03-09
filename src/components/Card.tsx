@@ -1,4 +1,4 @@
-import formatDate from "../utils/formatDate";
+import dateFromTimestamp from "../utils/dateFromTimestamp";
 
 type CardProps = {
 	list: List;
@@ -19,7 +19,7 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 		>
 			<div className="flex justify-between items-start mb-2">
 				<h3 className="text-xl font-semibold truncate">
-					{list.name || "Untitled List"}
+					{list.title || "Untitled List"}
 				</h3>
 				{list.category && (
 					<span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
@@ -49,8 +49,8 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 				)}
 
 				<div className="flex justify-between text-xs text-[rgb(var(--color-content))] mt-2">
-					<span>Created: {formatDate(list.createdAt)}</span>
-					<span>Updated: {formatDate(list.updatedAt)}</span>
+					<span>Created: {dateFromTimestamp(list.createdAt)}</span>
+					<span>Updated: {dateFromTimestamp(list.updatedAt)}</span>
 				</div>
 			</div>
 		</div>

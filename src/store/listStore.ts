@@ -6,7 +6,7 @@ type ListStore = {
   lists: List[];
   setLists: () => Promise<{ success?: boolean }>;
   updateList: (listId: string, data: List) => Promise<{ success?: boolean }>;
-  createList: (data: List) => Promise<{ success: boolean }>,
+  createList: (data: List) => Promise<{ success: boolean, id: string }>,
   deleteList: (listId: string) => Promise<{ success: boolean }>;
   clearListCache: () => void;
 }
@@ -56,12 +56,12 @@ const listState = create<ListStore>()(
         if (res?.success && res?.doc?.id) {
           const newList = res?.doc;
           set((state) => ({ lists: [...state.lists, newList] }));
-          return { success: true };
+          return { success: true, id: res?.doc?.id };
         }
       } catch (error) {
         console.log("error adding List", error);
       }
-      return { success: false }
+      return { success: false, id: "" }
     },
     deleteList: async (listId: string) => {
       try {

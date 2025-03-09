@@ -81,7 +81,7 @@
   :root {
     --color-bkg: 245, 245, 250;
     --color-bkg2: 225, 230, 240;
-    --color-secondary: 100, 140, 250;
+    --color-secondary: 90, 180, 180;
     --color-accent-1: 210, 230, 255;
     --color-accent-2: 160, 190, 250;
     --color-content: 75, 75, 75;
@@ -105,7 +105,7 @@
   [data-theme="light"] {
     --color-bkg: 245, 245, 250;
     --color-bkg2: 225, 230, 240;
-    --color-secondary: 100, 140, 250;
+    --color-secondary: 90, 180, 180;
     --color-accent-1: 210, 230, 255;
     --color-accent-2: 160, 190, 250;
     --color-content: 75, 75, 75;

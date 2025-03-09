@@ -15,6 +15,10 @@ type ModalProps = {
 	footerBtn?: React.ReactNode;
 };
 
+type ModalHandle = {
+	dismiss: () => void;
+};
+
 const Modal = forwardRef<ModalHandle, ModalProps>(
 	({ isOpen, onClose, children, footerBtn }, ref) => {
 		const modalRef = useRef<HTMLDivElement>(null);

@@ -60,7 +60,7 @@ type ListItem = {
 
 type List = {
   id?: string;
-  name?: string;
+  title?: string;
   description?: string;
   createdAt?: string;
   updatedAt?: string;

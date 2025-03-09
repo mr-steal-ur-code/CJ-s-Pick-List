@@ -36,7 +36,9 @@ const Input: React.FC<InputProps> = ({
 	return (
 		<>
 			{error && <ErrorMessage className="mb-3" error={error} />}
-			<div className={`relative z-0 ${labelType === "floating" && "pb-4"}`}>
+			<div
+				className={`relative z-0 w-full ${labelType === "floating" && "pb-4"}`}
+			>
 				{labelType === "stacked" && (
 					<label className="text-sm font-medium" htmlFor={name}>
 						{labelText}
@@ -57,7 +59,7 @@ const Input: React.FC<InputProps> = ({
 					className={`${
 						error
 							? "border-2 border-danger"
-							: "border-0 border-b-2 border-tertiary"
+							: "border-0 border-b-2 border-[rgb(var(--color-secondary))]"
 					} ${className} text-xl block pt-1 my-2 px-0 w-full bg-transparent appearance-none focus:outline-hidden focus:ring-0 focus:border-primary peer transition-colors duration-300`}
 					placeholder=" "
 				/>
