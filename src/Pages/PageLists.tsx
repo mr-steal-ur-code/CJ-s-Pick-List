@@ -6,7 +6,7 @@ const PageLists: React.FC = () => {
 	const { lists } = listState();
 	return (
 		<div className="fade-in py-4">
-			<div className="flex flex-row justify-end pr-4">
+			<div className="flex flex-row justify-end pr-4 pb-4">
 				<Button href="/lists/new" type="outline" text="New List" />
 			</div>
 			<ListCardGrid lists={lists} />

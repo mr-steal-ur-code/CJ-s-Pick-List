@@ -3,7 +3,7 @@ import { formatTimestamp } from "../../utils/formatTimestamp";
 import PhotoCropper from "../PhotoCropper";
 import { useAuth } from "../../context/AuthContext";
 import { lazy, useRef } from "react";
-import { Link } from "react-router-dom";
+import Button from "../Button";
 
 type ModalProfileProps = {
 	isOpen: boolean;
@@ -44,16 +44,15 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 							/>
 						</div>
 					) : (
-						<>
-							<Link
-								className="border-b-2 hover:text-primary hover:border-b-primary transition-colors duration-300"
-								to="/sign-in"
+						<div className="text-center">
+							<Button
+								type="text"
+								text="Sign In"
+								href="/sign-in"
 								onClick={() => modalRef?.current?.dismiss()}
-							>
-								Sign-In
-							</Link>
-							<span> to access your account</span>
-						</>
+							/>
+							<span className="block"> to access your account</span>
+						</div>
 					)}
 				</div>
 			</Modal>

@@ -12,15 +12,11 @@ type ModalProps = {
 	isOpen: boolean;
 	onClose: () => void;
 	children: React.ReactNode;
-	footerBtn?: React.ReactNode;
-};
-
-type ModalHandle = {
-	dismiss: () => void;
+	footerLeftBtn?: React.ReactNode;
 };
 
 const Modal = forwardRef<ModalHandle, ModalProps>(
-	({ isOpen, onClose, children, footerBtn }, ref) => {
+	({ isOpen, onClose, children, footerLeftBtn }, ref) => {
 		const modalRef = useRef<HTMLDivElement>(null);
 		const [animateClass, setAnimateClass] = useState("");
 		const [bgAnimateClass, setBgAnimateClass] = useState("");
@@ -71,7 +67,7 @@ const Modal = forwardRef<ModalHandle, ModalProps>(
 					<div className="flex-grow overflow-auto p-2">{children}</div>
 
 					<div className="border-t border-white flex justify-between items-center p-2">
-						<div>{footerBtn}</div>
+						<div>{footerLeftBtn}</div>
 						<Button
 							type="text"
 							className="p-2 hover:text-[rgb(var(--color-danger))] cursor-pointer ml-auto"

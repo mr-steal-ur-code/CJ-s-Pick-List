@@ -33,7 +33,7 @@ const ModalProfile: React.FC<ModalItemAddProps> = ({
 				ref={modalRef}
 				isOpen={isOpen}
 				onClose={onClose}
-				footerBtn={
+				footerLeftBtn={
 					<Button type="cancel" text="Delete" onClick={handleDelete} />
 				}
 			>

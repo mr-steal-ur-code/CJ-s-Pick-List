@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import AppToaster from "../../components/Toast/AppToaster";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -43,7 +42,7 @@ const Register: React.FC = () => {
 	};
 
 	return (
-		<div className="fade-in">
+		<div className="fade-in p-4">
 			<AppToaster />
 			{user?.id && !emailVerified ? (
 				<div className="text-center">
@@ -98,9 +97,12 @@ const Register: React.FC = () => {
 					</form>
 					<div className="text-center">
 						<span className="p-4 block"> Already have an account? </span>
-						<Link className="hover:opacity-70 text-center" to="/sign-in">
-							Sign In
-						</Link>
+						<Button
+							href="/sign-in"
+							color="text-primary"
+							type="text"
+							text="Sign In"
+						/>
 					</div>
 				</div>
 			)}

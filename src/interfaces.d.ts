@@ -47,6 +47,10 @@ type WhereStatement = {
   value: any;
 }
 
+type ModalHandle = {
+  dismiss: () => void;
+};
+
 type ListItem = {
   id?: string;
   name?: string;

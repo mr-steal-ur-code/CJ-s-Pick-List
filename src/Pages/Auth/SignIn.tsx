@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
 import Input from "../../components/Input";
 import ErrorMessage from "../../components/ErrorMessage";
 
@@ -45,9 +44,12 @@ const SignIn: React.FC = () => {
 					/>
 					{error && <ErrorMessage error={error} />}
 					<div className="flex justify-end">
-						<Link className="hover:opacity-75" to="/recover-password">
-							Forgot Password?
-						</Link>
+						<Button
+							color="text-[rgb(var(--color-secondary))]"
+							type="text"
+							text="Forgot Password?"
+							href="/recover-password"
+						/>
 					</div>
 					<div className="flex flex-col gap-5 items-center mt-4">
 						<Button
@@ -58,9 +60,12 @@ const SignIn: React.FC = () => {
 						/>
 
 						<p>or</p>
-						<Link className="hover:opacity-75 text-lg" to="/register">
-							<span className="font-bold">SIGN UP</span>
-						</Link>
+						<Button
+							text="Sign Up"
+							color="text-primary"
+							type="text"
+							href="/register"
+						/>
 					</div>
 				</form>
 			</div>
