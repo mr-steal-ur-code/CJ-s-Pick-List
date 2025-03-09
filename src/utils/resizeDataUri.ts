@@ -26,8 +26,9 @@ const resizeDataUri = (url: any, maxWidth = 500, maxHeight = 500, quality = "1")
 
       canvas.width = newWidth;
       canvas.height = newHeight;
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       ctx && ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+      const dataUrl = canvas.toDataURL('image/jpeg', Number(quality));
       resolve(dataUrl);
     };
     img.onerror = reject;

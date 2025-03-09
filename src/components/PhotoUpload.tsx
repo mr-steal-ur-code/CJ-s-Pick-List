@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import ErrorMessage from "./ErrorMessage";
 import Button from "./Button";
-import { MdClear } from "react-icons/md";
+import { X } from "lucide-react";
 
 type PhotoUploadProps = {
 	onChange?: (file: File) => void;
@@ -29,7 +29,9 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
 			setFileName(file.name || "No Image Name");
 			const imageUrl = URL.createObjectURL(file);
 			setPreviewUrl(imageUrl);
-			onChange && file && onChange(file);
+			if (onChange && file) {
+				onChange(file);
+			}
 		}
 	};
 
@@ -64,7 +66,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
 						<p className="text-success text-wrap break-words max-w-[60vw] p-2">
 							{fileName}
 						</p>
-						<MdClear
+						<X
 							onClick={() => {
 								if (!confirm("Clear selected Image?")) return;
 								clear();

@@ -1,6 +1,5 @@
-import { FaSun } from "react-icons/fa6";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
-import { IoMoonSharp } from "react-icons/io5";
 import "./theme.css";
 
 const ThemeSwitch: React.FC = () => {
@@ -11,7 +10,7 @@ const ThemeSwitch: React.FC = () => {
 			onClick={toggleTheme}
 		>
 			<div className="icon-container">
-				{theme === "dark" ? <IoMoonSharp /> : <FaSun />}
+				{theme === "dark" ? <Moon /> : <Sun />}
 			</div>
 		</div>
 	);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
 import ErrorMessage from "./ErrorMessage";
+import { categories } from "../globalVariables";
 
 interface ItemFormProps {
 	onSubmit: (item: ListItem) => void;
@@ -32,8 +33,10 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem, error }) => {
 	};
 
 	const handleSubmit = () => {
+		console.log("submit clicked");
+
 		if (!item?.name) return alert("Item requires a name");
-		onSubmit && onSubmit(item);
+		if (onSubmit) onSubmit(item);
 	};
 
 	return (
@@ -49,11 +52,11 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem, error }) => {
 
 			<select name="category" value={item?.category} onChange={handleChange}>
 				<option value="">Select Category</option>
-				<option value="grocery">Grocery</option>
-				<option value="work">Work</option>
-				<option value="household">Household</option>
-				<option value="event">Event</option>
-				<option value="other">Other</option>
+				{categories?.map((category) => (
+					<option key={category} value={category}>
+						{category.charAt(0).toUpperCase() + category.slice(1)}
+					</option>
+				))}
 			</select>
 
 			{item?.category === "grocery" && (

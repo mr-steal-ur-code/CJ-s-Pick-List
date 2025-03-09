@@ -69,5 +69,5 @@ type List = {
   createdAt?: string;
   updatedAt?: string;
   items?: ListItem[];
-  category?: "grocery" | "work" | "household" | "event" | "other";
+  category?: "grocery" | "work" | "recipe" | "household" | "event" | "other";
 }

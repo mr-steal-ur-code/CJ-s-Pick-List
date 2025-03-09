@@ -10,7 +10,7 @@ const Modal = lazy(() => import("./Modal"));
 const ModalProfile: React.FC<ModalItemAddProps> = ({ isOpen, onClose }) => {
 	const modalRef = useRef(null);
 	const handleSubmit = () => {
-		onClose && modalRef?.current?.dismiss();
+		if (onClose) modalRef?.current?.dismiss();
 	};
 	return (
 		<SuspenseLoader>

@@ -17,7 +17,7 @@ const EditItem: React.FC<EditItemProps> = ({ itemId, onSubmit }) => {
 		setError("");
 		const res = await updateItem(itemId, e);
 		if (res.success) {
-			onSubmit && onSubmit();
+			if (onSubmit) onSubmit();
 		} else setError("Error Updating Item");
 	};
 

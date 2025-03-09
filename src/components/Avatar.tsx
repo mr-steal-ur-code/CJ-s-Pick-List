@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { MdPerson } from "react-icons/md";
+import { User } from "lucide-react";
 
 interface AvatarProps {
 	imageUrl?: string | null;
@@ -37,7 +37,7 @@ const Avatar: FC<AvatarProps> = ({ imageUrl, height, width, onClick }) => {
 					referrerPolicy="no-referrer"
 				/>
 			) : (
-				<MdPerson className={`rounded-full ${scaling}`} size={45} />
+				<User className={`rounded-full ${scaling}`} size={45} />
 			)}
 		</div>
 	);

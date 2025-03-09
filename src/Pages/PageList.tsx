@@ -5,6 +5,7 @@ import listState from "../store/listStore";
 import PageItems from "./PageItems";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { categories } from "../globalVariables";
 
 const PageList: React.FC = () => {
 	const navigate = useNavigate();
@@ -77,11 +78,11 @@ const PageList: React.FC = () => {
 						/>
 						<select name="category" className="w-full">
 							<option value="">Select Category</option>
-							<option value="grocery">Grocery</option>
-							<option value="work">Work</option>
-							<option value="household">Household</option>
-							<option value="event">Event</option>
-							<option value="other">Other</option>
+							{categories?.map((category) => (
+								<option key={category} value={category}>
+									{category.charAt(0).toUpperCase() + category.slice(1)}
+								</option>
+							))}
 						</select>
 						<Button className="w-full" text="Create" submit />
 					</form>

@@ -11,9 +11,7 @@ import { useState } from "react";
 import Button from "../components/Button";
 import ModalItemAdd from "../components/Modals/ModalItemAdd";
 import ListItem from "../components/ListItem";
-
-const categories = ["grocery", "work", "household", "event", "other", ""];
-const locations = ["in-store", "online", ""];
+import { categories, locations } from "../globalVariables";
 interface PageItemProps {
 	isMakingList?: boolean;
 	children?: React.ReactNode;
@@ -206,7 +204,7 @@ const PageItems: React.FC<PageItemProps> = ({
 									>
 										All Locations
 									</div>
-									{locations.map((loc) => (
+									{locations?.map((loc) => (
 										<div
 											key={loc}
 											onClick={() => {

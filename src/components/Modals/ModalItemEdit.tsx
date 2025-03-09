@@ -18,7 +18,7 @@ const ModalProfile: React.FC<ModalItemAddProps> = ({
 	const { deleteItem } = itemState();
 	const modalRef = useRef(null);
 	const handleSubmit = () => {
-		onClose && modalRef?.current?.dismiss();
+		if (onClose) modalRef?.current?.dismiss();
 	};
 
 	const handleDelete = async () => {

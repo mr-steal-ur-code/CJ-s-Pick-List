@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import ErrorMessage from "../../components/ErrorMessage";
-import { IoArrowBack } from "react-icons/io5";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const RecoverPassword: React.FC = () => {
@@ -27,7 +27,7 @@ const RecoverPassword: React.FC = () => {
 	return (
 		<div className="px-2">
 			<Link className="text-sm align-middle hover:text-primary" to="/sign-in">
-				<IoArrowBack className="inline-block" /> Back to sign in
+				<ArrowLeft className="inline-block" /> Back to sign in
 			</Link>
 			<div className="fade-in flex flex-col items-center gap-12 pt-12">
 				<h4>Forgot your password?</h4>
