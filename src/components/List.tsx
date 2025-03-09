@@ -59,11 +59,11 @@ const List: React.FC<ListProps> = ({ listId }) => {
 				if (a.refrigerated !== b.refrigerated) {
 					return sortOrder === "asc"
 						? a.refrigerated
-							? 1
-							: -1
+							? -1
+							: 1
 						: b.refrigerated
-						? 1
-						: -1;
+						? -1
+						: 1;
 				}
 				const nameA = (a.name || "").toLowerCase();
 				const nameB = (b.name || "").toLowerCase();
@@ -76,7 +76,7 @@ const List: React.FC<ListProps> = ({ listId }) => {
 	return (
 		<div
 			className={`min-h-[90vh] bg-[rgb(var(--color-accent-2))] rounded ${
-				loading ? "animate-pulse opacity-70" : ""
+				loading ? "animate-pulse opacity-25" : ""
 			}`}
 		>
 			<div className="flex items-center justify-between w-full">
@@ -108,6 +108,7 @@ const List: React.FC<ListProps> = ({ listId }) => {
 			<ul>
 				{getSortedItems(list?.items)?.map((item) => (
 					<ListItem
+						showQty
 						key={item?.id}
 						item={item}
 						canToggle

@@ -20,8 +20,8 @@ const Home: React.FC = () => {
 			<AppToaster />
 			{currentListId && <List listId={currentListId}></List>}
 			{user?.id ? (
-				<div className="min-h-screen p-6 flex flex-col items-center justify-center">
-					<div className="max-w-4xl w-full rounded-xl shadow-lg p-8 space-y-6">
+				<div className="p-4 flex flex-col items-center justify-center">
+					<div className="max-w-4xl w-full rounded-xl shadow-lg space-y-6">
 						<div className="text-center space-y-3">
 							<p className="text-[rgb(var(--color-secondary))]">
 								Welcome to your personal dashboard

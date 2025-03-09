@@ -87,11 +87,18 @@ const Button: React.FC<ButtonProps> = ({
 	const handleClick = () => {
 		if (disabled || loading) return;
 
-		if (href && onClick) {
+		let handled = false;
+
+		if (href && !handled) {
+			handled = true;
 			navigate(href, navigateOptions);
-			onClick?.();
-		} else if (onClick) {
+		}
+
+		if (onClick && !handled) {
+			handled = true;
 			onClick();
+		} else if (onClick && handled) {
+			setTimeout(() => onClick(), 50);
 		}
 	};
 

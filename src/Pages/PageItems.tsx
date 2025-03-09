@@ -267,7 +267,7 @@ const PageItems: React.FC<PageItemProps> = ({
 					<ModalItemAdd isOpen={toggleModal} onClose={handleDebounceClose} />
 				</>
 			)}
-			<div className={loading ? "pointer-events-none opacity-50" : ""}>
+			<div className={loading ? "pointer-events-none " : ""}>
 				{filteredItems?.map?.((item) => (
 					<ListItem
 						canToggle={isMakingList}

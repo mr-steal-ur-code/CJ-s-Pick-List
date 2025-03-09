@@ -59,6 +59,7 @@ type ListItem = {
   unit?: "box" | "bottle" | "pack" | "case" | "bag" | "";
   tags?: string;
   location?: "in-store" | "online" | "";
+  quantity?: number;
   completed?: boolean;
 }
 

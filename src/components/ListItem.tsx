@@ -18,6 +18,7 @@ type ListItemProps = {
 	className?: string;
 	isEditable?: boolean;
 	canToggle?: boolean;
+	showQty?: boolean;
 	onToggleComplete?: () => void;
 };
 
@@ -50,6 +51,7 @@ const ListItem: React.FC<ListItemProps> = ({
 	className,
 	isEditable,
 	canToggle,
+	showQty,
 	onToggleComplete,
 }) => {
 	const [toggleModal, setToggleModal] = useState(false);
@@ -78,7 +80,7 @@ const ListItem: React.FC<ListItemProps> = ({
 				isEditable || (canToggle && !item?.completed)
 					? "cursor-pointer hover:bg-[rgb(var(--color-accent-2))] transition-all duration-100"
 					: item?.completed
-					? "bg-gray-100 line-through text-gray-500"
+					? "cursor-pointer bg-gray-400 line-through text-gray-500 hover:bg-gray-300"
 					: ""
 			} relative flex items-center gap-3 p-3 shadow-sm border-1 bg-[rgb(var(--color-accent-1))] border-[rgb(var(--color-accent-1))]`}
 		>
@@ -87,6 +89,11 @@ const ListItem: React.FC<ListItemProps> = ({
 			<div className="flex-1">
 				<p className="capitalize truncate-on-wrap text-center font-semibold text-lg">
 					{item?.name}
+					{showQty && (
+						<span className="text-[rgb(var(--color-secondary))] ml-2">
+							({item?.quantity})
+						</span>
+					)}
 				</p>
 				<p className="text-sm text-gray-500">{item?.location}</p>
 			</div>

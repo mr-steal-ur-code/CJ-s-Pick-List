@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 					{list.title || "Untitled List"}
 				</h3>
 				{list.category && (
-					<span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+					<span className="capitalize px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
 						{list.category}
 					</span>
 				)}
