@@ -17,6 +17,7 @@ const AddItem: React.FC<AddItemProps> = ({ onSubmit }) => {
 			category: item?.category || "other",
 			unit: item?.unit || "",
 			tags: item?.tags || "",
+			quantity: 1,
 			location: item?.location || "",
 		};
 
