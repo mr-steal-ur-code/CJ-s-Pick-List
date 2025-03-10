@@ -1,4 +1,4 @@
-import { setDoc, collection, doc, deleteDoc, getDoc, getDocs, limit, query, CollectionReference, where, orderBy, startAfter, getCountFromServer } from "firebase/firestore"
+import { setDoc, collection, doc, deleteDoc, getDoc, getDocs, limit, query, CollectionReference, where, orderBy, startAfter, getCountFromServer, serverTimestamp } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import generateUuidv4 from "../utils/uuidv4";
 import { db, storage } from "../firebase";
@@ -36,12 +36,19 @@ const countDocs = async (collectionName: string, whereStatements?: WhereStatemen
   }
 };
 
-const createDoc = async (collectionName: string, data: any, docId?: string) => {
+const createDoc = async (collectionName: string, data: any, userId?: string, docId?: string) => {
   const id = docId ? docId : generateUuidv4(28);
   try {
-    await setDoc(doc(db, collectionName, id), { ...data, id, createdAt: new Date() });
+    const documentData = {
+      ...data,
+      id,
+      createdAt: serverTimestamp(),
+      ...(userId ? { createdBy: doc(db, "users", userId) } : {})
+    };
 
-    return { success: true, doc: { ...data, id } };
+    await setDoc(doc(db, collectionName, id), documentData);
+
+    return { success: true, doc: documentData };
   } catch (error: any) {
     console.warn("error saving Document", error?.message || error?.code)
     return { success: false, response: error?.message || error?.code };

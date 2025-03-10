@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
+import useUserStore from './userStore';
 
 type ListStore = {
   lists: List[];
@@ -52,7 +53,8 @@ const listState = create<ListStore>()(
     },
     createList: async (data: List) => {
       try {
-        const res = await createDoc("lists", data);
+        const userState = useUserStore.getState();
+        const res = await createDoc("lists", data, userState?.user?.id);
         if (res?.success && res?.doc?.id) {
           const newList = res?.doc;
           set((state) => ({ lists: [...state.lists, newList] }));

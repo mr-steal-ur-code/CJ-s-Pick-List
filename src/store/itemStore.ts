@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
+import useUserStore from './userStore';
 
 type ItemStore = {
   items: ListItem[];
@@ -52,7 +53,8 @@ const itemState = create<ItemStore>()(
     },
     createItem: async (data: ListItem) => {
       try {
-        const res = await createDoc("items", data);
+        const user = useUserStore.getState();
+        const res = await createDoc("items", data, user?.user?.id);
         if (res?.success && res?.doc?.id) {
           const newItem = res?.doc;
           set((state) => ({ items: [...state.items, newItem] }));
