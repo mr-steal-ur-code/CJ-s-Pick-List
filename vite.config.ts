@@ -23,30 +23,32 @@ export default defineConfig({
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
     injectRegister: 'script-defer',
+    includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
 
     manifest: {
       name: 'CJ\'s Pick List',
       short_name: 'Pick List',
       description: 'Your ultimate list-making tool—effortlessly create, edit, and manage lists in an instant.',
-      theme_color: '#FFD700',
+      theme_color: '#19192d',
+      scope: '/',
+      start_url: '/',
+      display: 'standalone',
 
       icons: [{
-        src: '/public/assets/icon/apple-touch-icon-72x72.png',
+        src: '/assets/icon/apple-touch-icon-72x72.png',
         sizes: '64x64',
         type: 'image/png',
+        purpose: 'any'
       }, {
-        src: '/public/assets/icon/apple-touch-icon-180x180.png',
+        src: '/assets/icon/apple-touch-icon-180x180.png',
         sizes: '192x192',
         type: 'image/png',
+        purpose: 'any'
       }, {
-        src: 'pwa-512x512.png',
+        src: '/assets/icon/icon.webp',
         sizes: '512x512',
-        type: 'image/png',
-      }, {
-        src: 'maskable-icon-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-        purpose: 'maskable',
+        type: 'image/webp',
+        purpose: 'any maskable'
       }],
     },
 

@@ -1,0 +1,9 @@
+# robots.txt for CJ's Pick List
+User-agent: *
+Allow: /
+
+# Disallow crawling of specific folders if needed
+
+# Crawl-delay directive (optional)
+# Some bots respect this directive to limit request rate
+# Crawl-delay: 10
