@@ -34,8 +34,6 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem, error }) => {
 	};
 
 	const handleSubmit = () => {
-		console.log("submit clicked");
-
 		if (!item?.name) return alert("Item requires a name");
 		if (onSubmit) onSubmit(item);
 	};

@@ -1,15 +1,32 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import listState from "../store/listStore";
+import { ChefHat } from "lucide-react";
 
 interface AddRecipeItemsProps {
 	addTolistId: string;
 }
 const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 	const selectRef = useRef<HTMLSelectElement | null>(null);
+	const dropdownRef = useRef(null);
+	const [isOpen, setIsOpen] = useState(false);
 	const { lists, updateList } = listState();
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	const handleAdd = async (selectedListId: string) => {
 		if (!selectedListId) return;
+		setIsOpen(false);
 
 		const selectedList = lists.find((list) => list.id === selectedListId);
 		const targetList = lists.find((list) => list.id === addTolistId);
@@ -55,17 +72,60 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 		selectRef.current.value = "";
 	};
 
+	const recipeOptions = lists
+		?.filter?.((list) => list.category === "recipe")
+		?.map((recList) => ({
+			id: recList?.id,
+			title: recList?.title,
+		}));
+
 	return (
-		<select ref={selectRef} onChange={(e) => handleAdd(e?.target?.value)}>
-			<option value="">Add Recipe</option>
-			{lists
-				?.filter?.((list) => list.category === "recipe")
-				?.map((recList) => (
-					<option key={recList?.id} value={recList?.id}>
-						{recList?.title}
+		<div className="relative" ref={dropdownRef}>
+			<button
+				className="p-1 px-2 bg-blue-500 text-white rounded-sm flex items-center justify-center shadow-md cursor-pointer"
+				onClick={() => setIsOpen(!isOpen)}
+				aria-label="Add recipe"
+			>
+				<ChefHat size={20} />
+			</button>
+
+			<select
+				ref={selectRef}
+				className="sr-only"
+				value=""
+				onChange={(e) => handleAdd(e?.target?.value)}
+			>
+				<option value="">Add Recipe</option>
+				{recipeOptions?.map((recipe) => (
+					<option key={recipe.id} value={recipe.id}>
+						{recipe.title}
 					</option>
 				))}
-		</select>
+			</select>
+
+			{isOpen && (
+				<div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 left-0 max-h-60 overflow-y-auto">
+					<div className="px-3 py-2 text-sm font-medium text-gray-700 border-b">
+						Add Recipe
+					</div>
+					{recipeOptions?.length > 0 ? (
+						recipeOptions.map((recipe) => (
+							<button
+								key={recipe.id}
+								className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+								onClick={() => handleAdd(recipe.id)}
+							>
+								{recipe.title}
+							</button>
+						))
+					) : (
+						<div className="px-4 py-2 text-sm text-gray-500">
+							No recipes available
+						</div>
+					)}
+				</div>
+			)}
+		</div>
 	);
 };
 

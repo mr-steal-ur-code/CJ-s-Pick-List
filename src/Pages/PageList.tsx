@@ -7,12 +7,14 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { categories } from "../globalVariables";
 import AddRecipeItems from "../components/AddRecipeItems";
+import { MinusCircle, PlusCircle, Trash2 } from "lucide-react";
 
 const PageList: React.FC = () => {
 	const navigate = useNavigate();
 	const { listId } = useParams();
 	const [loading, setLoading] = useState(false);
-	const [viewMode, setViewMode] = useState<"add" | "remove">("add");
+	const [editingItems, setEditingItems] = useState({});
+	const [viewMode, setViewMode] = useState<"add" | "edit">("add");
 	const { createList, lists, updateList } = listState();
 	const currentList: List = lists?.find((list) => list?.id === listId);
 
@@ -39,6 +41,11 @@ const PageList: React.FC = () => {
 			setLoading(false);
 			toast.success("Item Added to List", { duration: 700 });
 		}
+	};
+
+	const handleIncreaseQuantity = async (item) => {
+		const newQuantity = (Number(item.quantity) || 1) + 1;
+		await updateItemQuantity(item, newQuantity);
 	};
 
 	const handleRemoveFromList = async (item: ListItem) => {
@@ -70,6 +77,79 @@ const PageList: React.FC = () => {
 		return removeRes;
 	};
 
+	const handleDecreaseQuantity = async (item) => {
+		const currentQuantity = Number(item.quantity) || 1;
+
+		if (currentQuantity <= 1) {
+			await handleRemoveFromList(item);
+		} else {
+			await updateItemQuantity(item, currentQuantity - 1);
+		}
+	};
+
+	const handleQuantityChange = (item, e) => {
+		const inputValue = e.target.value;
+
+		setEditingItems({
+			...editingItems,
+			[item.id]: inputValue,
+		});
+	};
+
+	const saveQuantity = async (item) => {
+		const newValue = editingItems[item.id];
+
+		if (newValue !== undefined) {
+			const newQuantity = Number(newValue);
+
+			if (
+				!isNaN(newQuantity) &&
+				newQuantity > 0 &&
+				newQuantity !== Number(item.quantity)
+			) {
+				await updateItemQuantity(item, newQuantity);
+			}
+
+			const newEditingItems = { ...editingItems };
+			delete newEditingItems[item.id];
+			setEditingItems(newEditingItems);
+		}
+	};
+
+	const updateItemQuantity = async (item, newQuantity) => {
+		const updatedItems = currentList.items.map((listItem) => {
+			if (listItem.id === item.id) {
+				return { ...listItem, quantity: newQuantity };
+			}
+			return listItem;
+		});
+
+		await updateList(currentList.id, {
+			...currentList,
+			items: updatedItems,
+		});
+	};
+
+	const handleKeyPress = (e, item) => {
+		if (e.key === "Enter") {
+			saveQuantity(item);
+		}
+	};
+
+	const handleDelete = async (item, e) => {
+		e.stopPropagation();
+		if (!confirm(`Delete All ${item?.name}?`)) return;
+
+		const updatedItems = currentList.items.filter(
+			(listItem) => listItem.id !== item.id
+		);
+
+		await updateList(currentList.id, {
+			...currentList,
+			items: updatedItems,
+		});
+	};
+
 	return (
 		<>
 			{listId ? (
@@ -80,8 +160,8 @@ const PageList: React.FC = () => {
 								{currentList?.title}
 							</span>
 						</h4>
-						<AddRecipeItems addTolistId={currentList?.id} />
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-4">
+							<AddRecipeItems addTolistId={currentList?.id} />
 							<button
 								onClick={() => setViewMode("add")}
 								className={`px-3 py-1 cursor-pointer rounded-l-md text-sm ${
@@ -93,14 +173,14 @@ const PageList: React.FC = () => {
 								Add
 							</button>
 							<button
-								onClick={() => setViewMode("remove")}
+								onClick={() => setViewMode("edit")}
 								className={`px-2 py-1 cursor-pointer rounded-r-md text-sm ${
-									viewMode === "remove"
+									viewMode === "edit"
 										? "bg-primary text-white"
 										: "bg-gray-200 text-gray-700"
 								}`}
 							>
-								Remove
+								Edit
 							</button>
 						</div>
 					</div>
@@ -128,35 +208,53 @@ const PageList: React.FC = () => {
 								currentList.items.map((item) => (
 									<div
 										key={item.id}
-										className="bg-[rgb(var(--color-bkg2))] border-2 border-[rgb(var(--color-danger))] p-3 rounded-md mb-2 shadow-sm flex justify-between items-center cursor-pointer hover:bg-[rgb(var(--color-bkg))]"
-										onClick={() => handleRemoveFromList(item)}
+										className="bg-[rgb(var(--color-bkg2))] border border-[rgb(var(--color-secondary))] p-3 rounded-md mb-2 shadow-sm flex justify-between items-center"
 									>
-										<div>
-											<h3 className="font-medium">
-												{item.name}
-												{!!Number(item?.quantity) && (
-													<span className="text-[rgb(var(--color-secondary))] ml-2">
-														({item?.quantity})
-													</span>
-												)}
-											</h3>
+										<div className="flex-grow">
+											<h3 className="font-medium">{item.name}</h3>
 										</div>
-										<button className="text-red-500">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="20"
-												height="20"
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
+
+										<div className="flex items-center gap-4">
+											<div className="flex items-center gap-1 mr-2">
+												<button
+													className="text-[rgb(var(--color-secondary))]"
+													onClick={() => handleDecreaseQuantity(item)}
+													aria-label="Decrease quantity"
+												>
+													<MinusCircle size={30} />
+												</button>
+
+												<input
+													type="text"
+													className="w-12 text-center mx-2 p-1 border rounded-md"
+													value={
+														editingItems[item?.id] !== undefined
+															? editingItems[item?.id]
+															: item?.quantity || 1
+													}
+													onChange={(e) => handleQuantityChange(item, e)}
+													onBlur={() => saveQuantity(item)}
+													onKeyDown={(e) => handleKeyPress(e, item)}
+													aria-label="Quantity"
+												/>
+
+												<button
+													className="text-[rgb(var(--color-secondary))]"
+													onClick={() => handleIncreaseQuantity(item)}
+													aria-label="Increase quantity"
+												>
+													<PlusCircle size={30} />
+												</button>
+											</div>
+
+											<button
+												className="text-[rgb(var(--color-danger))]"
+												onClick={(e) => handleDelete(item, e)}
+												aria-label="Delete item"
 											>
-												<polyline points="3 6 5 6 21 6"></polyline>
-												<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-											</svg>
-										</button>
+												<Trash2 size={30} />
+											</button>
+										</div>
 									</div>
 								))
 							) : (

@@ -32,7 +32,7 @@ const PhotoCropper: React.FC<CropperProps> = ({ user, onClose }) => {
 	const handleClose = () => {
 		setImage(null);
 		(inputEl.current as HTMLInputElement).value = "";
-		onClose && onClose();
+		if (onClose) onClose();
 	};
 
 	const handleCrop = async () => {

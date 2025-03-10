@@ -21,8 +21,6 @@ const AddItem: React.FC<AddItemProps> = ({ onSubmit }) => {
 		};
 
 		const res = await createItem(newItem);
-		console.log("res: ", res);
-
 		if (res.success) {
 			if (onSubmit) {
 				onSubmit();

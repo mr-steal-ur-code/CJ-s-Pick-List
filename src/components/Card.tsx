@@ -1,4 +1,6 @@
+import listState from "../store/listStore";
 import dateFromTimestamp from "../utils/dateFromTimestamp";
+import { Trash2 } from "lucide-react";
 
 type CardProps = {
 	list: List;
@@ -11,6 +13,14 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 		const completedItems = list.items.filter((item) => item.completed).length;
 		return Math.round((completedItems / list.items.length) * 100);
 	};
+	const { deleteList } = listState();
+
+	const handleDelete = (e: React.MouseEvent, listId: string) => {
+		e.stopPropagation();
+		e.preventDefault();
+		if (!confirm("Delete this List?")) return;
+		deleteList(listId);
+	};
 
 	return (
 		<div
@@ -21,6 +31,16 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 				<h3 className="text-xl font-semibold truncate">
 					{list.title || "Untitled List"}
 				</h3>
+				<button
+					onClick={(e) => handleDelete(e, list.id)}
+					aria-label="Delete list"
+				>
+					<Trash2
+						className="hover:opacity-75 cursor-pointer"
+						color="rgb(var(--color-danger))"
+						size={24}
+					/>
+				</button>
 				{list.category && (
 					<span className="capitalize px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
 						{list.category}
