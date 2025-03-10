@@ -26,8 +26,10 @@ const itemState = create<ItemStore>()(
         const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
         const isAllowedUser = allowedUserIds.includes(currentUserId);
         let where: WhereStatement[] = [];
+        let path = `/items/${currentUserId}`;
 
         if (isAllowedUser) {
+          path = "/items/shared/items";
           const userRefs = allowedUserIds.map(userId => doc(db, "users", userId));
           where = [
             {
@@ -49,7 +51,7 @@ const itemState = create<ItemStore>()(
           { field: "createdAt", direction: "desc" }
         ];
 
-        const res = await queryList("items", where, order, null, lastDoc);
+        const res = await queryList(path, where, order, null, lastDoc);
 
         if (res.success && res.response) {
           set((state) => ({
