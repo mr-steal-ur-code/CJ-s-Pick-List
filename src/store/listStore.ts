@@ -1,32 +1,68 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
+import { createDoc, findDoc, killDoc, queryList, updateDoc } from "../actions/firebaseClientCalls";
 import useUserStore from './userStore';
+import { doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 type ListStore = {
   lists: List[];
+  lastListDoc: any;
   setLists: () => Promise<{ success?: boolean }>;
   updateList: (listId: string, data: List) => Promise<{ success?: boolean }>;
   createList: (data: List) => Promise<{ success: boolean, id: string }>,
   deleteList: (listId: string) => Promise<{ success: boolean }>;
   clearListCache: () => void;
 }
+const userState = useUserStore.getState();
+const currentUserId = userState?.user?.id;
 
 const listState = create<ListStore>()(
   persist((set) => ({
     lists: [],
-    setLists: async () => {
+    lastListDoc: {},
+    setLists: async (lastDoc = null) => {
       try {
-        const res = await listDocs("lists");
+        const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
+        const isAllowedUser = allowedUserIds.includes(currentUserId);
+        let where: WhereStatement[] = [];
+
+        if (isAllowedUser) {
+          const userRefs = allowedUserIds.map(userId => doc(db, "users", userId));
+          where = [
+            {
+              key: "createdBy",
+              conditional: "in",
+              value: userRefs
+            }
+          ];
+        } else {
+          where = [
+            {
+              key: "createdBy",
+              conditional: "==",
+              value: doc(db, "users", currentUserId)
+            }
+          ];
+        }
+        const order: OrderByCriteria[] = [
+          { field: "createdAt", direction: "desc" }
+        ];
+
+        const res = await queryList("lists", where, order, null, lastDoc);
+
         if (res.success && res.response) {
-          set({ lists: res.response });
+          set((state) => ({
+            lists: lastDoc ? [...state.lists, ...res.response.docs] : res.response.docs,
+            lastListDoc: res.response.lastDocumentId
+          }));
           return { success: true };
         } else {
-          console.error("Failed to fetch lists from Firebase:", res);
+          console.error("Failed to fetch Lists from Firebase:", res);
           return { success: false };
         }
       } catch (error) {
-        console.error("Error fetching lists:", error);
+        console.error("Error fetching Lists:", error);
         return { success: false };
       }
     },
@@ -53,8 +89,7 @@ const listState = create<ListStore>()(
     },
     createList: async (data: List) => {
       try {
-        const userState = useUserStore.getState();
-        const res = await createDoc("lists", data, userState?.user?.id);
+        const res = await createDoc("lists", data, currentUserId);
         if (res?.success && res?.doc?.id) {
           const newList = res?.doc;
           set((state) => ({ lists: [...state.lists, newList] }));
@@ -79,7 +114,7 @@ const listState = create<ListStore>()(
       }
       return { success: false };
     },
-    clearListCache: () => set({ lists: [] })
+    clearListCache: () => set({ lists: [], lastListDoc: null })
   }), {
     name: "pick-list-lists-store",
     storage: createJSONStorage(() => localStorage),

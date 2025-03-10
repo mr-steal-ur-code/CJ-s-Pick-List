@@ -95,7 +95,6 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 				value=""
 				onChange={(e) => handleAdd(e?.target?.value)}
 			>
-				<option value="">Add Recipe</option>
 				{recipeOptions?.map((recipe) => (
 					<option key={recipe.id} value={recipe.id}>
 						{recipe.title}
@@ -105,9 +104,6 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 
 			{isOpen && (
 				<div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 left-0 max-h-60 overflow-y-auto">
-					<div className="px-3 py-2 text-sm font-medium text-gray-700 border-b">
-						Add Recipe
-					</div>
 					{recipeOptions?.length > 0 ? (
 						recipeOptions.map((recipe) => (
 							<button

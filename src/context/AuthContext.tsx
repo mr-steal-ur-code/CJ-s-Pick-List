@@ -23,6 +23,7 @@ type AuthContextType = {
 	emailSignInCreate: (email: string, password: string) => Promise<void>;
 	emailAndPasswordSignIn: (email: string, password: string) => Promise<void>;
 	passwordReset: (email: string) => Promise<void>;
+	clearAndSyncCache: () => void;
 	signout: () => void;
 };
 
@@ -126,6 +127,15 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 		}
 	};
 
+	const clearAndSyncCache = async () => {
+		console.log("Clearing Cache");
+		await clearItemCache();
+		await clearListCache();
+		await setItems();
+		await setLists();
+		console.log("Cache Synced");
+	};
+
 	useEffect(() => {
 		if (!auth) return;
 		return auth.onAuthStateChanged(async (currentUser) => {
@@ -169,6 +179,7 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 				emailSignInCreate,
 				emailAndPasswordSignIn,
 				passwordReset,
+				clearAndSyncCache,
 				signout,
 			}}
 		>

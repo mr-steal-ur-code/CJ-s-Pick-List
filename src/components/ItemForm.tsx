@@ -19,6 +19,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, listItem, error }) => {
 		unit: listItem?.unit || "",
 		tags: listItem?.tags || "",
 		quantity: 1,
+		completed: false,
 		location: listItem?.location || "",
 	});
 

@@ -39,11 +39,13 @@ const Home: React.FC = () => {
 									className="px-4 py-2 rounded-lg  bg-[rgb(var(--color-accent-1))] border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full md:w-auto"
 								>
 									<option>Choose a list</option>
-									{lists?.map((list) => (
-										<option key={list?.id} value={list?.id}>
-											{list?.title}
-										</option>
-									))}
+									{lists
+										?.filter((li) => li?.category !== "recipe")
+										?.map((list) => (
+											<option key={list?.id} value={list?.id}>
+												{list?.title}
+											</option>
+										))}
 								</select>
 
 								<Button href="/lists/new" text="Create New List" />

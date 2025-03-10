@@ -3,16 +3,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import generateUuidv4 from "../utils/uuidv4";
 import { db, storage } from "../firebase";
 
-interface WhereStatement {
-  key: string;
-  conditional: WhereFilterOp;
-  value: any;
-}
-interface OrderByCriteria {
-  field: string;
-  direction: "desc" | "asc";
-}
-
 const countDocs = async (collectionName: string, whereStatements?: WhereStatement[],) => {
   try {
     const collectionRef = collection(db, collectionName);

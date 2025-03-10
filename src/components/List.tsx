@@ -47,6 +47,7 @@ const List: React.FC<ListProps> = ({ listId }) => {
 			if (a.completed !== b.completed) {
 				return a.completed ? 1 : -1;
 			}
+
 			if (sortBy === "name") {
 				const nameA = (a.name || "").toLowerCase();
 				const nameB = (b.name || "").toLowerCase();
@@ -65,10 +66,12 @@ const List: React.FC<ListProps> = ({ listId }) => {
 						? -1
 						: 1;
 				}
+
 				const nameA = (a.name || "").toLowerCase();
 				const nameB = (b.name || "").toLowerCase();
 				return nameA.localeCompare(nameB);
 			}
+
 			return 0;
 		});
 	};

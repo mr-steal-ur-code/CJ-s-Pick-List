@@ -1,4 +1,3 @@
-import SuspenseLoader from "../SuspenseLoader";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import PhotoCropper from "../PhotoCropper";
 import { useAuth } from "../../context/AuthContext";
@@ -17,46 +16,50 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 	user,
 }) => {
 	const modalRef = useRef<ModalHandle>(null);
-	const { isLoggedIn, signout } = useAuth();
+	const { isLoggedIn, signout, clearAndSyncCache } = useAuth();
 
 	return (
-		<SuspenseLoader>
-			<Modal ref={modalRef} isOpen={isOpen} onClose={onClose}>
-				<div className="py-2">
-					{isLoggedIn ? (
-						<div className="flex flex-col gap-6">
-							<p
-								className="self-end cursor-pointer font-semibold hover:text-primary"
-								onClick={() => {
-									if (!confirm("Sign out?")) return;
-									signout();
-								}}
-							>
-								Sign Out
-							</p>
-							<p>
-								Account Created on{" "}
-								{formatTimestamp(user?.createdAt, "shortDate")}
-							</p>
-							<PhotoCropper
-								user={user}
-								onClose={() => modalRef?.current?.dismiss()}
-							/>
-						</div>
-					) : (
-						<div className="text-center">
-							<Button
-								type="text"
-								text="Sign In"
-								href="/sign-in"
-								onClick={() => modalRef?.current?.dismiss()}
-							/>
-							<span className="block"> to access your account</span>
-						</div>
-					)}
-				</div>
-			</Modal>
-		</SuspenseLoader>
+		<Modal
+			ref={modalRef}
+			isOpen={isOpen}
+			footerLeftBtn={
+				<Button text="Sync State" type="cancel" onClick={clearAndSyncCache} />
+			}
+			onClose={onClose}
+		>
+			<div className="py-2">
+				{isLoggedIn ? (
+					<div className="flex flex-col gap-6">
+						<p
+							className="self-end cursor-pointer font-semibold hover:text-primary"
+							onClick={() => {
+								if (!confirm("Sign out?")) return;
+								signout();
+							}}
+						>
+							Sign Out
+						</p>
+						<p>
+							Account Created on {formatTimestamp(user?.createdAt, "shortDate")}
+						</p>
+						<PhotoCropper
+							user={user}
+							onClose={() => modalRef?.current?.dismiss()}
+						/>
+					</div>
+				) : (
+					<div className="text-center">
+						<Button
+							type="text"
+							text="Sign In"
+							href="/sign-in"
+							onClick={() => modalRef?.current?.dismiss()}
+						/>
+						<span className="block"> to access your account</span>
+					</div>
+				)}
+			</div>
+		</Modal>
 	);
 };
 

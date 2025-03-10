@@ -1,25 +1,61 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { createDoc, findDoc, killDoc, listDocs, updateDoc } from "../actions/firebaseClientCalls";
-import useUserStore from './userStore';
+import { createDoc, findDoc, killDoc, queryList, updateDoc } from "../actions/firebaseClientCalls";
+import userStore from './userStore';
+import { doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 type ItemStore = {
   items: ListItem[];
+  lastItemDoc: any;
   setItems: () => Promise<{ success?: boolean }>;
   updateItem: (itemId: string, data: ListItem) => Promise<{ success?: boolean }>;
   createItem: (data: ListItem) => Promise<{ success: boolean }>,
   deleteItem: (itemId: string) => Promise<{ success: boolean }>;
   clearItemCache: () => void;
 }
+const userState = userStore.getState();
+const currentUserId = userState?.user?.id;
 
 const itemState = create<ItemStore>()(
   persist((set) => ({
     items: [],
-    setItems: async () => {
+    lastItemDoc: {},
+    setItems: async (lastDoc = null) => {
       try {
-        const res = await listDocs("items");
+        const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
+        const isAllowedUser = allowedUserIds.includes(currentUserId);
+        let where: WhereStatement[] = [];
+
+        if (isAllowedUser) {
+          const userRefs = allowedUserIds.map(userId => doc(db, "users", userId));
+          where = [
+            {
+              key: "createdBy",
+              conditional: "in",
+              value: userRefs
+            }
+          ];
+        } else {
+          where = [
+            {
+              key: "createdBy",
+              conditional: "==",
+              value: doc(db, "users", currentUserId)
+            }
+          ];
+        }
+        const order: OrderByCriteria[] = [
+          { field: "createdAt", direction: "desc" }
+        ];
+
+        const res = await queryList("items", where, order, null, lastDoc);
+
         if (res.success && res.response) {
-          set({ items: res.response });
+          set((state) => ({
+            items: lastDoc ? [...state.items, ...res.response.docs] : res.response.docs,
+            lastItemDoc: res.response.lastDocumentId
+          }));
           return { success: true };
         } else {
           console.error("Failed to fetch items from Firebase:", res);
@@ -53,8 +89,7 @@ const itemState = create<ItemStore>()(
     },
     createItem: async (data: ListItem) => {
       try {
-        const user = useUserStore.getState();
-        const res = await createDoc("items", data, user?.user?.id);
+        const res = await createDoc("items", data, currentUserId);
         if (res?.success && res?.doc?.id) {
           const newItem = res?.doc;
           set((state) => ({ items: [...state.items, newItem] }));
@@ -79,7 +114,7 @@ const itemState = create<ItemStore>()(
       }
       return { success: false };
     },
-    clearItemCache: () => set({ items: [] })
+    clearItemCache: () => set({ items: [], lastItemDoc: null })
   }), {
     name: "pick-list-items-store",
     storage: createJSONStorage(() => localStorage),

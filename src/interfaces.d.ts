@@ -41,10 +41,14 @@ type WhereFilterOp =
   | "not-in"
   | "array-contains-any";
 
-type WhereStatement = {
+interface WhereStatement {
   key: string;
   conditional: WhereFilterOp;
   value: any;
+}
+interface OrderByCriteria {
+  field: string;
+  direction: "desc" | "asc";
 }
 
 type ModalHandle = {
