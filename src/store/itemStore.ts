@@ -15,20 +15,30 @@ type ItemStore = {
   clearItemCache: () => void;
   getPath: () => string;
 }
-const userState = userStore.getState();
-const currentUserId = userState?.user?.id;
+
 const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
-const isAllowedUser = allowedUserIds.includes(currentUserId);
 
 const itemState = create<ItemStore>()(
   persist((set, get) => ({
     items: [],
     lastItemDoc: {},
     getPath: () => {
+      const userState = userStore.getState();
+      const currentUserId = userState?.user?.id;
+      const isAllowedUser = allowedUserIds.includes(currentUserId);
       return isAllowedUser ? "/items/shared/items" : `/items/${currentUserId}/items`;
     },
     setItems: async (lastDoc = null) => {
       try {
+        const userState = userStore.getState();
+        const currentUserId = userState?.user?.id;
+
+        if (!currentUserId) {
+          console.error("No user ID available");
+          return { success: false };
+        }
+
+        const isAllowedUser = allowedUserIds.includes(currentUserId);
         const path = get().getPath();
         let where: WhereStatement[] = [];
 
@@ -95,8 +105,17 @@ const itemState = create<ItemStore>()(
     },
     createItem: async (data: ListItem) => {
       try {
+        const userState = userStore.getState();
+        const currentUserId = userState?.user?.id;
+
+        if (!currentUserId) {
+          console.error("No user ID available");
+          return { success: false };
+        }
+
         const path = get().getPath();
         const res = await createDoc(path, data, currentUserId);
+
         if (res?.success && res?.doc?.id) {
           const newItem = res?.doc;
           set((state) => ({ items: [...state.items, newItem] }));
