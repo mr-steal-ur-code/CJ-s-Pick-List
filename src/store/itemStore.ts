@@ -25,7 +25,7 @@ const itemState = create<ItemStore>()(
     items: [],
     lastItemDoc: {},
     getPath: () => {
-      return isAllowedUser ? "/items/shared/items" : `/items/${currentUserId}`;
+      return isAllowedUser ? "/items/shared/items" : `/items/${currentUserId}/items`;
     },
     setItems: async (lastDoc = null) => {
       try {

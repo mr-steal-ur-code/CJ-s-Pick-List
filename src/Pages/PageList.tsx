@@ -38,8 +38,9 @@ const PageList: React.FC = () => {
 		});
 
 		if (addItemRes.success) {
+			toast.dismiss();
 			setLoading(false);
-			toast.success("Item Added to List", { duration: 700 });
+			toast.success("Item Added to List", { duration: 800 });
 		}
 	};
 

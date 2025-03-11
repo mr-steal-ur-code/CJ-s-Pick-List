@@ -4,6 +4,7 @@ import { createDoc, findDoc, killDoc, queryList, updateDoc } from "../actions/fi
 import useUserStore from './userStore';
 import { doc } from "firebase/firestore";
 import { db } from "../firebase";
+import { cleanReferences } from "../utils/cleanReferences";
 
 type ListStore = {
   lists: List[];
@@ -73,8 +74,9 @@ const listState = create<ListStore>()(
     },
     updateList: async (listId: string, data: List) => {
       try {
+        const cleanedData = cleanReferences(data);
         const path = get().getPath();
-        const res = await updateDoc(path, listId, data);
+        const res = await updateDoc(path, listId, cleanedData);
         if (res.success) {
           const listRes = await findDoc(path, listId);
           if (listRes?.doc) {
