@@ -13,23 +13,26 @@ type ItemStore = {
   createItem: (data: ListItem) => Promise<{ success: boolean }>,
   deleteItem: (itemId: string) => Promise<{ success: boolean }>;
   clearItemCache: () => void;
+  getPath: () => string;
 }
 const userState = userStore.getState();
 const currentUserId = userState?.user?.id;
+const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
+const isAllowedUser = allowedUserIds.includes(currentUserId);
 
 const itemState = create<ItemStore>()(
-  persist((set) => ({
+  persist((set, get) => ({
     items: [],
     lastItemDoc: {},
+    getPath: () => {
+      return isAllowedUser ? "/items/shared/items" : `/items/${currentUserId}`;
+    },
     setItems: async (lastDoc = null) => {
       try {
-        const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
-        const isAllowedUser = allowedUserIds.includes(currentUserId);
+        const path = get().getPath();
         let where: WhereStatement[] = [];
-        let path = `/items/${currentUserId}`;
 
         if (isAllowedUser) {
-          path = "/items/shared/items";
           const userRefs = allowedUserIds.map(userId => doc(db, "users", userId));
           where = [
             {
@@ -70,9 +73,10 @@ const itemState = create<ItemStore>()(
     },
     updateItem: async (itemId: string, data: ListItem) => {
       try {
-        const res = await updateDoc("items", itemId, data);
+        const path = get().getPath();
+        const res = await updateDoc(path, itemId, data);
         if (res.success) {
-          const itemRes = await findDoc("items", itemId);
+          const itemRes = await findDoc(path, itemId);
           if (itemRes?.doc) {
             set((state) => ({
               items: state.items.map((item) =>
@@ -91,7 +95,8 @@ const itemState = create<ItemStore>()(
     },
     createItem: async (data: ListItem) => {
       try {
-        const res = await createDoc("items", data, currentUserId);
+        const path = get().getPath();
+        const res = await createDoc(path, data, currentUserId);
         if (res?.success && res?.doc?.id) {
           const newItem = res?.doc;
           set((state) => ({ items: [...state.items, newItem] }));
@@ -104,7 +109,8 @@ const itemState = create<ItemStore>()(
     },
     deleteItem: async (itemId: string) => {
       try {
-        const res = await killDoc("items", itemId);
+        const path = get().getPath();
+        const res = await killDoc(path, itemId);
         if (res.success) {
           set((state) => ({
             items: state.items.filter((item) => item.id !== itemId),
