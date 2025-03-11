@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createDoc, findDoc, killDoc, queryList, updateDoc } from "../actions/firebaseClientCalls";
-import useUserStore from './userStore';
+import userStore from './userStore';
 import { doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { cleanReferences } from "../utils/cleanReferences";
@@ -11,26 +11,37 @@ type ListStore = {
   lastListDoc: any;
   setLists: () => Promise<{ success?: boolean }>;
   updateList: (listId: string, data: List) => Promise<{ success?: boolean }>;
-  createList: (data: List) => Promise<{ success: boolean, id: string }>,
+  createList: (data: List) => Promise<{ success: boolean, id?: string }>,
   deleteList: (listId: string) => Promise<{ success: boolean }>;
   clearListCache: () => void;
   getPath: () => string;
 }
-const userState = useUserStore.getState();
-const currentUserId = userState?.user?.id;
+
 const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
-const isAllowedUser = allowedUserIds.includes(currentUserId);
 
 const listState = create<ListStore>()(
   persist((set, get) => ({
     lists: [],
     lastListDoc: {},
     getPath: () => {
+      const userState = userStore.getState();
+      const currentUserId = userState?.user?.id;
+      const isAllowedUser = allowedUserIds.includes(currentUserId);
       return isAllowedUser ? "/lists/shared/lists" : `/lists/${currentUserId}`;
     },
     setLists: async (lastDoc = null) => {
       try {
+        const userState = userStore.getState();
+        const currentUserId = userState?.user?.id;
+
+        if (!currentUserId) {
+          console.error("No user ID available");
+          return { success: false };
+        }
+
+        const isAllowedUser = allowedUserIds.includes(currentUserId);
         const path = get().getPath();
+
         let where: WhereStatement[] = [];
 
         if (isAllowedUser) {
@@ -97,8 +108,17 @@ const listState = create<ListStore>()(
     },
     createList: async (data: List) => {
       try {
+        const userState = userStore.getState();
+        const currentUserId = userState?.user?.id;
+
+        if (!currentUserId) {
+          console.error("No user ID available");
+          return { success: false };
+        }
+
         const path = get().getPath();
         const res = await createDoc(path, data, currentUserId);
+
         if (res?.success && res?.doc?.id) {
           const newList = res?.doc;
           set((state) => ({ lists: [...state.lists, newList] }));

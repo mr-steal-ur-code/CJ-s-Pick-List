@@ -40,6 +40,7 @@ const itemState = create<ItemStore>()(
 
         const isAllowedUser = allowedUserIds.includes(currentUserId);
         const path = get().getPath();
+
         let where: WhereStatement[] = [];
 
         if (isAllowedUser) {
