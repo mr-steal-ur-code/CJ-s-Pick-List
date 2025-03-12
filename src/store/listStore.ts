@@ -27,7 +27,7 @@ const listState = create<ListStore>()(
       const userState = userStore.getState();
       const currentUserId = userState?.user?.id;
       const isAllowedUser = allowedUserIds.includes(currentUserId);
-      return isAllowedUser ? "/lists/shared/lists" : `/lists/${currentUserId}`;
+      return isAllowedUser ? "/lists/shared/lists" : `/lists/${currentUserId}/lists`;
     },
     setLists: async (lastDoc = null) => {
       try {

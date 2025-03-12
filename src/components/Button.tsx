@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 type ButtonProps = {
 	text?: string;
-	textSize?: "sm" | "md" | "lg";
+	textSize?: "sm" | "md" | "lg" | "xl";
 	className?: string;
 	type?: "cancel" | "reset" | "outline" | "text";
 	submit?: boolean;
@@ -54,7 +54,9 @@ const Button: React.FC<ButtonProps> = ({
 			: textSize === "md"
 			? "text-lg"
 			: textSize === "lg"
-			? "text-xl"
+			? "text-2xl"
+			: textSize === "xl"
+			? "text-4xl"
 			: "text-md"
 	} ${
 		disabled

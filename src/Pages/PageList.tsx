@@ -32,21 +32,16 @@ const PageList: React.FC = () => {
 
 	const handleAddToList = async (item: ListItem) => {
 		setLoading(true);
-		const addItemRes = await updateList(listId, {
+		const updateRes = await updateList(listId, {
 			...currentList,
 			items: [...(currentList?.items || []), item],
 		});
 
-		if (addItemRes.success) {
-			toast.dismiss();
+		if (updateRes?.success) {
 			setLoading(false);
-			toast.success("Item Added to List", { duration: 800 });
+			toast?.dismiss();
+			toast.success("List Updated", { duration: 800 });
 		}
-	};
-
-	const handleIncreaseQuantity = async (item) => {
-		const newQuantity = (Number(item.quantity) || 1) + 1;
-		await updateItemQuantity(item, newQuantity);
 	};
 
 	const handleRemoveFromList = async (item: ListItem) => {
@@ -69,13 +64,22 @@ const PageList: React.FC = () => {
 				return listItem.id !== item.id || Number(listItem.quantity) > 0;
 			});
 
-		const removeRes = await updateList(listId, {
+		const updateRes = await updateList(listId, {
 			...currentList,
 			items: updatedItems,
 		});
+		if (updateRes?.success) {
+			toast?.dismiss();
+			toast.success("List Updated", { duration: 800 });
+		}
 
 		setLoading(false);
-		return removeRes;
+		return updateRes;
+	};
+
+	const handleIncreaseQuantity = async (item) => {
+		const newQuantity = (Number(item.quantity) || 1) + 1;
+		await updateItemQuantity(item, newQuantity);
 	};
 
 	const handleDecreaseQuantity = async (item) => {
@@ -118,17 +122,22 @@ const PageList: React.FC = () => {
 	};
 
 	const updateItemQuantity = async (item, newQuantity) => {
-		const updatedItems = currentList.items.map((listItem) => {
+		const updatedItems = currentList?.items?.map((listItem) => {
 			if (listItem.id === item.id) {
 				return { ...listItem, quantity: newQuantity };
 			}
+
 			return listItem;
 		});
 
-		await updateList(currentList.id, {
+		const updateRes = await updateList(currentList.id, {
 			...currentList,
 			items: updatedItems,
 		});
+		if (updateRes?.success) {
+			toast?.dismiss();
+			toast.success("List Updated", { duration: 800 });
+		}
 	};
 
 	const handleKeyPress = (e, item) => {
@@ -145,22 +154,26 @@ const PageList: React.FC = () => {
 			(listItem) => listItem.id !== item.id
 		);
 
-		await updateList(currentList.id, {
+		const updateRes = await updateList(currentList.id, {
 			...currentList,
 			items: updatedItems,
 		});
+		if (updateRes?.success) {
+			toast?.dismiss();
+			toast.success("List Updated", { duration: 800 });
+		}
 	};
 
 	return (
 		<>
 			{listId ? (
 				<>
-					<div className="flex items-center justify-between px-4 py-2 shadow-sm">
-						<h4 className="text-primary">
-							<span className="text-[rgb(var(--color-secondary))] font-bold capitalize">
-								{currentList?.title}
-							</span>
-						</h4>
+					<h3 className="text-center text-[rgb(var(--color-secondary))] px-4 py-2 rounded-lg font-bold shadow-md">
+						<span className="text-[rgb(var(--color-secondary))] font-bold capitalize">
+							Add Items to {currentList?.title}
+						</span>
+					</h3>
+					<div className="flex items-center justify-end px-4 py-2 shadow-sm">
 						<div className="flex items-center gap-4">
 							<AddRecipeItems addTolistId={currentList?.id} />
 							<button

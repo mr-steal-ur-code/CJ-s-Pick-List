@@ -128,12 +128,11 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 	};
 
 	const clearAndSyncCache = async () => {
-		console.log("Clearing Cache");
 		await clearItemCache();
 		await clearListCache();
 		await setItems();
 		await setLists();
-		console.log("Cache Synced");
+		return { success: true };
 	};
 
 	useEffect(() => {
@@ -157,6 +156,7 @@ export const AuthContextProvider = ({ children }: { children: any }) => {
 				setIsAdmin(claims?.admin || false);
 				setIsMember(claims?.member || false);
 				const userDocRes = await handleUserDocument(currentUser);
+
 				if (userDocRes?.success) {
 					await setUser(userDocRes?.response);
 					setItems();

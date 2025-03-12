@@ -3,6 +3,8 @@ import PhotoCropper from "../PhotoCropper";
 import { useAuth } from "../../context/AuthContext";
 import { lazy, useRef } from "react";
 import Button from "../Button";
+import toast from "react-hot-toast";
+import isAllowedShare from "../../utils/isAllowedShare";
 
 type ModalProfileProps = {
 	isOpen: boolean;
@@ -18,12 +20,19 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 	const modalRef = useRef<ModalHandle>(null);
 	const { isLoggedIn, signout, clearAndSyncCache } = useAuth();
 
+	const handleSync = async () => {
+		const syncRes = await clearAndSyncCache();
+		if (syncRes?.success) toast.success("Data Synced");
+	};
+
 	return (
 		<Modal
 			ref={modalRef}
 			isOpen={isOpen}
 			footerLeftBtn={
-				<Button text="Sync State" type="cancel" onClick={clearAndSyncCache} />
+				isAllowedShare(user?.id) && (
+					<Button text="Sync Data" type="cancel" onClick={handleSync} />
+				)
 			}
 			onClose={onClose}
 		>

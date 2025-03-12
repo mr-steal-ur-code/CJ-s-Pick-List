@@ -16,7 +16,7 @@ export default async function handleUserDocument(user: User | any) {
         createdAt: new Date() || null,
         createdBy: user?.uid,
       };
-      await createDoc("users", userData, userData?.id)
+      await createDoc("users", userData, userData?.id, userData?.id)
       return { success: true, response: userData };
     } else return {
       success: true, response:

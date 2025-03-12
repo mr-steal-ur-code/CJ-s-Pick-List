@@ -4,6 +4,8 @@ import { createDoc, findDoc, killDoc, queryList, updateDoc } from "../actions/fi
 import userStore from './userStore';
 import { doc } from "firebase/firestore";
 import { db } from "../firebase";
+import isAllowedShare from "../utils/isAllowedShare";
+import { allowedUserIds } from "../globalVariables";
 
 type ItemStore = {
   items: ListItem[];
@@ -16,8 +18,6 @@ type ItemStore = {
   getPath: () => string;
 }
 
-const allowedUserIds = ["1E2Jn65K0dUyVkEWQAcPxtrrXQj2", "IQJq6y6Ti9b9514Va20ylcm40XN2"];
-
 const itemState = create<ItemStore>()(
   persist((set, get) => ({
     items: [],
@@ -25,8 +25,7 @@ const itemState = create<ItemStore>()(
     getPath: () => {
       const userState = userStore.getState();
       const currentUserId = userState?.user?.id;
-      const isAllowedUser = allowedUserIds.includes(currentUserId);
-      return isAllowedUser ? "/items/shared/items" : `/items/${currentUserId}/items`;
+      return isAllowedShare(currentUserId) ? "/items/shared/items" : `/items/${currentUserId}/items`;
     },
     setItems: async (lastDoc = null) => {
       try {
@@ -37,14 +36,12 @@ const itemState = create<ItemStore>()(
           console.error("No user ID available");
           return { success: false };
         }
-
-        const isAllowedUser = allowedUserIds.includes(currentUserId);
         const path = get().getPath();
 
         let where: WhereStatement[] = [];
 
-        if (isAllowedUser) {
-          const userRefs = allowedUserIds.map(userId => doc(db, "users", userId));
+        if (isAllowedShare(currentUserId)) {
+          const userRefs = allowedUserIds?.map(userId => doc(db, "users", userId));
           where = [
             {
               key: "createdBy",

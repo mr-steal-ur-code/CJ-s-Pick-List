@@ -4,6 +4,7 @@ import listState from "../store/listStore";
 import List from "../components/List";
 import userState from "../store/userStore";
 import Button from "../components/Button";
+import Loader from "../components/Loader";
 
 const Home: React.FC = () => {
 	document.title = "CJ's Pick List";
@@ -23,9 +24,9 @@ const Home: React.FC = () => {
 				<div className="p-4 flex flex-col items-center justify-center">
 					<div className="max-w-4xl w-full rounded-xl shadow-lg space-y-6">
 						<div className="text-center space-y-3">
-							<p className="text-[rgb(var(--color-secondary))]">
+							<h5 className="text-[rgb(var(--color-secondary))]">
 								Welcome to your personal dashboard
-							</p>
+							</h5>
 						</div>
 
 						<div className="bg-[rgb(var(--color-accent-3))] rounded-lg p-6 border border-blue-100">
@@ -72,6 +73,10 @@ const Home: React.FC = () => {
 							</div>
 						</div>
 					</div>
+				</div>
+			) : Object.keys(user).length === 0 ? (
+				<div className="mt-[10vh]">
+					<Loader size="lg" />
 				</div>
 			) : (
 				<div className="flex flex-col items-center p-4 gap-8">

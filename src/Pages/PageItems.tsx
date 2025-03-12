@@ -173,7 +173,6 @@ const PageItems: React.FC<PageItemProps> = ({
 							</div>
 						)}
 					</div>
-
 					<div className="relative">
 						<button
 							onClick={() => setOpenLocation(!openLocation)}
@@ -220,7 +219,6 @@ const PageItems: React.FC<PageItemProps> = ({
 							</div>
 						)}
 					</div>
-
 					<label className="flex items-center gap-2 cursor-pointer">
 						<input
 							type="checkbox"
@@ -258,6 +256,9 @@ const PageItems: React.FC<PageItemProps> = ({
 			{!isMakingList && (
 				<>
 					<div className="mb-2 flex flex-row items-center gap-12 justify-end">
+						<h3 className="m-auto text-[rgb(var(--color-secondary))] px-4 py-2 rounded-lg font-bold shadow-md">
+							Item Manager
+						</h3>
 						<Button
 							type="outline"
 							text="Add"
@@ -268,15 +269,19 @@ const PageItems: React.FC<PageItemProps> = ({
 				</>
 			)}
 			<div className={loading ? "pointer-events-none " : ""}>
-				{filteredItems?.map?.((item) => (
-					<ListItem
-						canToggle={isMakingList}
-						onToggleComplete={() => onItemClick(item)}
-						isEditable={!isMakingList}
-						key={item?.id}
-						item={item}
-					/>
-				))}
+				{filteredItems?.length > 0 ? (
+					filteredItems.map((item) => (
+						<ListItem
+							canToggle={isMakingList}
+							onToggleComplete={() => onItemClick(item)}
+							isEditable={!isMakingList}
+							key={item?.id}
+							item={item}
+						/>
+					))
+				) : (
+					<h4 className="text-center py-6 text-gray-500">No items found</h4>
+				)}
 			</div>
 		</div>
 	);
