@@ -33,6 +33,7 @@ const createDoc = async (collectionName: string, data: any, userId?: string, doc
       ...data,
       id,
       createdAt: new Date(),
+      updatedAt: new Date(),
       ...(userId ? { createdBy: doc(db, "users", userId) } : {})
     };
 

@@ -19,6 +19,8 @@ const Home: React.FC = () => {
 	const handleListSelect = async (listId: string) => {
 		setCurrentListId(lists?.find((list) => list?.id === listId)?.id || "");
 		selectRef.current.value = "";
+		const temp = lists?.find((list) => list?.id === listId)?.updatedAt;
+		console.log("updated at ", typeof temp, temp);
 	};
 
 	const newestLists = lists
@@ -40,6 +42,8 @@ const Home: React.FC = () => {
 			toast.success("List Deleted");
 		} else toast.error("Error Deleting List");
 	};
+
+	console.log();
 
 	return (
 		<div className="fade-in">
