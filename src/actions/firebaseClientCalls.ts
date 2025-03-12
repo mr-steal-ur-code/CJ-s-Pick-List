@@ -1,4 +1,4 @@
-import { setDoc, collection, doc, deleteDoc, getDoc, getDocs, limit, query, CollectionReference, where, orderBy, startAfter, getCountFromServer, serverTimestamp } from "firebase/firestore"
+import { setDoc, collection, doc, deleteDoc, getDoc, getDocs, limit, query, CollectionReference, where, orderBy, startAfter, getCountFromServer } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import generateUuidv4 from "../utils/uuidv4";
 import { db, storage } from "../firebase";
@@ -32,7 +32,7 @@ const createDoc = async (collectionName: string, data: any, userId?: string, doc
     const documentData = {
       ...data,
       id,
-      createdAt: serverTimestamp(),
+      createdAt: new Date(),
       ...(userId ? { createdBy: doc(db, "users", userId) } : {})
     };
 

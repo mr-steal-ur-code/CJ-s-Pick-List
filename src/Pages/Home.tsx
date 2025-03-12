@@ -4,7 +4,6 @@ import listState from "../store/listStore";
 import List from "../components/List";
 import userState from "../store/userStore";
 import Button from "../components/Button";
-import Loader from "../components/Loader";
 
 const Home: React.FC = () => {
 	document.title = "CJ's Pick List";
@@ -73,10 +72,6 @@ const Home: React.FC = () => {
 							</div>
 						</div>
 					</div>
-				</div>
-			) : Object.keys(user).length === 0 ? (
-				<div className="mt-[10vh]">
-					<Loader size="lg" />
 				</div>
 			) : (
 				<div className="flex flex-col items-center p-4 gap-8">

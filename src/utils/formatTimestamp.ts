@@ -6,11 +6,29 @@ type DateFormats = {
   dateInput: string;
 }
 
-const formatTimestamp = (timestamp: Timestamp, format: keyof DateFormats) => {
-  if (!timestamp) return;
-  const seconds = timestamp.seconds;
+const formatTimestamp = (timestampOrDate: Timestamp | Date | any, format: keyof DateFormats) => {
+  if (!timestampOrDate) return;
 
-  const date = new Date(seconds * 1000);
+  let date: Date;
+
+  // Handle Firebase Timestamp
+  if (timestampOrDate instanceof Timestamp) {
+    date = new Date(timestampOrDate.seconds * 1000);
+  }
+  // Handle JavaScript Date object
+  else if (timestampOrDate instanceof Date) {
+    date = timestampOrDate;
+  }
+  // Handle other object types, like toString() format
+  else if (typeof timestampOrDate === 'object') {
+    // Try to convert to Date if it's a date-like object
+    date = new Date(timestampOrDate);
+  }
+  // If conversion failed or invalid input
+  if (!date || isNaN(date.getTime())) {
+    console.error("Invalid date format provided");
+    return;
+  }
 
   const monthName = date.toLocaleString("default", { month: "long" });
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -25,7 +43,8 @@ const formatTimestamp = (timestamp: Timestamp, format: keyof DateFormats) => {
     case "dateInput":
       return `${year}-${month}-${day}`;
     default:
-      console.log("Invalid format provided. Supported formats: shortDate, longDate");
+      console.log("Invalid format provided. Supported formats: shortDate, longDate, dateInput");
+      return;
   }
 }
 

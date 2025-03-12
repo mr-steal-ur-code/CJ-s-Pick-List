@@ -1,10 +1,10 @@
-import { formatTimestamp } from "../../utils/formatTimestamp";
 import PhotoCropper from "../PhotoCropper";
 import { useAuth } from "../../context/AuthContext";
 import { lazy, useRef } from "react";
 import Button from "../Button";
 import toast from "react-hot-toast";
 import isAllowedShare from "../../utils/isAllowedShare";
+import dateFromTimestamp from "../../utils/dateFromTimestamp";
 
 type ModalProfileProps = {
 	isOpen: boolean;
@@ -24,6 +24,8 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 		const syncRes = await clearAndSyncCache();
 		if (syncRes?.success) toast.success("Data Synced");
 	};
+
+	console.log(typeof user?.createdAt, user?.createdAt);
 
 	return (
 		<Modal
@@ -48,9 +50,7 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 						>
 							Sign Out
 						</p>
-						<p>
-							Account Created on {formatTimestamp(user?.createdAt, "shortDate")}
-						</p>
+						<p>Account Created on {dateFromTimestamp(user?.createdAt)}</p>
 						<PhotoCropper
 							user={user}
 							onClose={() => modalRef?.current?.dismiss()}

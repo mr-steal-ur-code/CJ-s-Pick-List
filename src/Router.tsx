@@ -13,13 +13,15 @@ import PageList from "./Pages/PageList";
 import PageItems from "./Pages/PageItems";
 
 const Router: React.FC = () => {
-	const { isLoggedIn } = useAuth();
+	const { isLoggedIn, emailVerified } = useAuth();
 
 	return (
 		<BrowserRouter>
 			<Header />
 			<div
-				className={`my-16 sm:max-w-[100vw] md:max-w-[650px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto flex flex-col`}
+				className={`${
+					emailVerified ? "my16" : "my-20"
+				} sm:max-w-[100vw] md:max-w-[650px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto flex flex-col`}
 			>
 				<Routes>
 					<Route path="/" element={<Home />} />
