@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from '../components/Button';
 import List from '../components/List';
 import AppToaster from '../components/Toast/AppToaster';
@@ -10,12 +10,14 @@ import generateUuidv4 from '../utils/uuidv4';
 
 const Home: React.FC = () => {
   document.title = "CJ's Pick List";
+  const selectRef = useRef<HTMLSelectElement>(null);
   const { user } = userState();
   const { lists } = listState();
   const [currentListId, setCurrentListId] = useState('');
 
   const handleListSelect = async (listId: string) => {
     setCurrentListId(lists?.find((list) => list?.id === listId)?.id || '');
+    selectRef.current.value = '';
   };
 
   const newestLists = lists
@@ -28,7 +30,7 @@ const Home: React.FC = () => {
     }));
 
   return (
-    <>
+    <div className="fade-in">
       <AppToaster />
       {currentListId && (
         <List reset={() => handleListSelect('')} listId={currentListId}></List>
@@ -49,10 +51,11 @@ const Home: React.FC = () => {
 
               <div className="flex flex-wrap gap-6 items-start">
                 <select
+                  ref={selectRef}
                   onChange={(e) => handleListSelect(e?.target?.value)}
                   className="px-4 py-2 rounded-lg  bg-[rgb(var(--color-accent-1))] border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full md:w-auto"
                 >
-                  <option>Choose a list</option>
+                  <option value="">Choose a list</option>
                   {lists
                     ?.filter((li) => li?.category !== 'recipe')
                     ?.map((list) => (
@@ -128,7 +131,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

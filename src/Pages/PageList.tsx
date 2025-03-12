@@ -165,7 +165,7 @@ const PageList: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="fade-in">
       {listId ? (
         <>
           <h3 className="text-center text-[rgb(var(--color-secondary))] px-4 py-2 rounded-lg font-bold shadow-md">
@@ -305,7 +305,7 @@ const PageList: React.FC = () => {
           </form>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
