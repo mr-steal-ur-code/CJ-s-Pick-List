@@ -21,7 +21,6 @@ interface PageItemProps {
 }
 const PageItems: React.FC<PageItemProps> = ({
 	isMakingList,
-	children,
 	onItemClick,
 	loading,
 	inListItemIds,
@@ -252,7 +251,6 @@ const PageItems: React.FC<PageItemProps> = ({
 					</label>
 				</div>
 			</div>
-			{isMakingList && children}
 			{!isMakingList && (
 				<>
 					<div className="mb-2 flex flex-row items-center gap-12 justify-end">
@@ -273,7 +271,10 @@ const PageItems: React.FC<PageItemProps> = ({
 					filteredItems.map((item) => (
 						<ListItem
 							canToggle={isMakingList}
-							onToggleComplete={() => onItemClick(item)}
+							onToggleComplete={() => {
+								setSearchQuery("");
+								onItemClick(item);
+							}}
 							isEditable={!isMakingList}
 							key={item?.id}
 							item={item}

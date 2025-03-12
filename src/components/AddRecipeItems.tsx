@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import listState from "../store/listStore";
 import { ChefHat } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface AddRecipeItemsProps {
 	addTolistId: string;
 }
 const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
-	const selectRef = useRef<HTMLSelectElement | null>(null);
 	const dropdownRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { lists, updateList } = listState();
@@ -28,27 +28,27 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 		if (!selectedListId) return;
 		setIsOpen(false);
 
-		const selectedList = lists.find((list) => list.id === selectedListId);
-		const targetList = lists.find((list) => list.id === addTolistId);
+		const selectedList = lists?.find((list) => list?.id === selectedListId);
+		const targetList = lists?.find((list) => list?.id === addTolistId);
 
 		if (!selectedList || !targetList) return;
 
-		const itemsToAdd = selectedList.items || [];
-		const currentItems = targetList.items || [];
+		const itemsToAdd = selectedList?.items || [];
+		const currentItems = targetList?.items || [];
 
 		const existingItemsMap = new Map();
-		currentItems.forEach((item) => {
-			existingItemsMap.set(item.id, item);
+		currentItems?.forEach((item) => {
+			existingItemsMap?.set(item?.id, item);
 		});
 
 		const updatedItems = [...currentItems];
 
 		itemsToAdd.forEach((newItem) => {
-			const existingItem = existingItemsMap.get(newItem.id);
+			const existingItem = existingItemsMap?.get(newItem?.id);
 
 			if (existingItem) {
 				const existingIndex = updatedItems.findIndex(
-					(item) => item.id === newItem.id
+					(item) => item?.id === newItem?.id
 				);
 
 				const existingQuantity = Number(existingItem.quantity) || 0;
@@ -68,8 +68,11 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 			items: updatedItems,
 		};
 
-		await updateList(addTolistId, updatedTargetList);
-		selectRef.current.value = "";
+		const res = await updateList(addTolistId, updatedTargetList);
+		toast.dismiss();
+		if (res?.success) {
+			toast.success("Recipe Items Added", { duration: 1200 });
+		} else toast.error("Error adding Recipe Items");
 	};
 
 	const recipeOptions = lists
@@ -80,7 +83,7 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 		}));
 
 	return (
-		<div className="relative" ref={dropdownRef}>
+		<div className="relative">
 			<button
 				className="p-1 px-2 bg-blue-500 text-white rounded-sm flex items-center justify-center shadow-md cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
@@ -89,36 +92,34 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 				<ChefHat size={20} />
 			</button>
 
-			<select
-				ref={selectRef}
-				className="sr-only"
-				value=""
-				onChange={(e) => handleAdd(e?.target?.value)}
-			>
-				{recipeOptions?.map((recipe) => (
-					<option key={recipe.id} value={recipe.id}>
-						{recipe.title}
-					</option>
-				))}
-			</select>
-
 			{isOpen && (
-				<div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 left-0 max-h-60 overflow-y-auto">
-					{recipeOptions?.length > 0 ? (
-						recipeOptions.map((recipe) => (
-							<button
-								key={recipe.id}
-								className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-								onClick={() => handleAdd(recipe.id)}
-							>
-								{recipe.title}
-							</button>
-						))
-					) : (
-						<div className="px-4 py-2 text-sm text-gray-500">
-							No recipes available
+				<div
+					className="fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] z-10"
+					onClick={() => setIsOpen(false)}
+				>
+					<div
+						className="w-96 p-4 rounded shadow-md bg-[rgb(var(--color-bkg2))] 
+                border border-[rgb(var(--color-secondary))] text-[rgb(var(--color-content))]"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<div className="max-h-64 overflow-y-auto">
+							{recipeOptions?.length > 0 ? (
+								recipeOptions.map((recipe) => (
+									<button
+										key={recipe.id}
+										className="block w-full text-left px-4 py-2 my-4 rounded-md text-sm border border-tertiary"
+										onClick={() => handleAdd(recipe?.id)}
+									>
+										{recipe.title}
+									</button>
+								))
+							) : (
+								<div className="px-4 py-2 text-sm text-gray-500">
+									No recipes available
+								</div>
+							)}
 						</div>
-					)}
+					</div>
 				</div>
 			)}
 		</div>

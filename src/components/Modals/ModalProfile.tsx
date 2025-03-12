@@ -25,8 +25,6 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 		if (syncRes?.success) toast.success("Data Synced");
 	};
 
-	console.log(typeof user?.createdAt, user?.createdAt);
-
 	return (
 		<Modal
 			ref={modalRef}

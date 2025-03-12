@@ -20,7 +20,7 @@ const Router: React.FC = () => {
 			<Header />
 			<div
 				className={`${
-					emailVerified ? "my16" : "my-20"
+					emailVerified ? "mt-16 mb-16" : "mt-20 mb-20"
 				} sm:max-w-[100vw] md:max-w-[650px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto flex flex-col`}
 			>
 				<Routes>
