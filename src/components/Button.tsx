@@ -60,13 +60,11 @@ const Button: React.FC<ButtonProps> = ({
 			: "text-md"
 	} ${
 		disabled
-			? "opacity-40 p-2"
+			? "opacity-40 p-2 cursor-not-allowed"
 			: type !== "text"
-			? "hover:bg-[rgb(var(--color-hover-bkg))] active:bg-transparent hover:opacity-70 active:opacity-20 p-2"
-			: "hover:opacity-70 active:opacity-20"
-	}  ${
-		color ? color : ""
-	} min-w-28 rounded-md cursor-pointer transition-all duration-300`;
+			? "hover:opacity-70 active:opacity-20 p-2 cursor-pointer"
+			: "hover:opacity-70 active:opacity-20 cursor-pointer"
+	}  ${color ? color : ""} min-w-28 rounded-md transition-all duration-300`;
 
 	switch (type) {
 		case "cancel":

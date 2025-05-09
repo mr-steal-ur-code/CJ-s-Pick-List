@@ -180,8 +180,7 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 						</div>
 						<div className="flex justify-between p-2 pt-6">
 							<Button
-								color="text-[rgb(var(--color-danger))]"
-								type="outline"
+								type="cancel"
 								onClick={() => {
 									setSelectedRecipes({});
 								}}
