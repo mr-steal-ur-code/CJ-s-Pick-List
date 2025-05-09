@@ -135,11 +135,11 @@ const Home: React.FC = () => {
 						</span>
 					</h1>
 					<p className="mt-2 text-lg text-[rgb(var(--color-secondary))] max-w-lg">
-						Organize, track, and manage your lists effort. A smarter way to stay
-						on top of your priorities.
+						Organize, track, and manage your lists effortlessly. A smarter way
+						to stay on top of your priorities.
 					</p>
 					<div>
-						New here?
+						New here?{" "}
 						<Button
 							color="text-primary"
 							type="text"

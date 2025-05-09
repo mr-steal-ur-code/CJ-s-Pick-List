@@ -5,6 +5,7 @@ import Button from "../Button";
 import toast from "react-hot-toast";
 import isAllowedShare from "../../utils/isAllowedShare";
 import dateFromTimestamp from "../../utils/dateFromTimestamp";
+import { useNavigate } from "react-router-dom";
 
 type ModalProfileProps = {
 	isOpen: boolean;
@@ -18,11 +19,19 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 	user,
 }) => {
 	const modalRef = useRef<ModalHandle>(null);
+	const navigate = useNavigate();
 	const { isLoggedIn, signout, clearAndSyncCache } = useAuth();
 
 	const handleSync = async () => {
 		const syncRes = await clearAndSyncCache();
 		if (syncRes?.success) toast.success("Data Synced");
+	};
+
+	const handleSignout = async () => {
+		if (!confirm("Sign out?")) return;
+		await signout();
+		navigate("/");
+		modalRef?.current?.dismiss();
 	};
 
 	return (
@@ -41,14 +50,21 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 					<div className="flex flex-col gap-6">
 						<p
 							className="self-end cursor-pointer font-semibold hover:text-primary"
-							onClick={() => {
-								if (!confirm("Sign out?")) return;
-								signout();
-							}}
+							onClick={handleSignout}
 						>
 							Sign Out
 						</p>
-						<p>Account Created on {dateFromTimestamp(user?.createdAt)}</p>
+						{user?.createdAt && (
+							<p>Account Created on {dateFromTimestamp(user?.createdAt)}</p>
+						)}
+						<p>
+							<Button
+								type="text"
+								text="Reset Password"
+								href="/recover-password"
+								onClick={() => modalRef?.current?.dismiss()}
+							/>
+						</p>
 						<PhotoCropper
 							user={user}
 							onClose={() => modalRef?.current?.dismiss()}
@@ -57,6 +73,7 @@ const ModalProfile: React.FC<ModalProfileProps> = ({
 				) : (
 					<div className="text-center">
 						<Button
+							color="text-primary"
 							type="text"
 							text="Sign In"
 							href="/sign-in"

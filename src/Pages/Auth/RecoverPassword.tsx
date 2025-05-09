@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const RecoverPassword: React.FC = () => {
 	document.title = "Recover Password";
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	const { passwordReset } = useAuth();
+	const { isLoggedIn, passwordReset } = useAuth();
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 
@@ -26,9 +26,11 @@ const RecoverPassword: React.FC = () => {
 
 	return (
 		<div className="px-2">
-			<Link className="text-sm align-middle hover:text-primary" to="/sign-in">
-				<ArrowLeft className="inline-block" /> Back to sign in
-			</Link>
+			{!isLoggedIn && (
+				<Link className="text-sm align-middle hover:text-primary" to="/sign-in">
+					<ArrowLeft className="inline-block" /> Back to sign in
+				</Link>
+			)}
 			<div className="fade-in flex flex-col items-center gap-12 pt-12">
 				<h4>Forgot your password?</h4>
 				<p className="font-bold p-2">
