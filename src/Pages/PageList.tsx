@@ -182,7 +182,7 @@ const PageList: React.FC = () => {
 								onClick={() => setViewMode("add")}
 								className={`px-3 py-1 cursor-pointer rounded-l-md text-sm ${
 									viewMode === "add"
-										? "bg-primary text-white"
+										? "bg-success text-white"
 										: "bg-gray-200 text-gray-700"
 								}`}
 							>
@@ -192,7 +192,7 @@ const PageList: React.FC = () => {
 								onClick={() => setViewMode("edit")}
 								className={`px-2 py-1 cursor-pointer rounded-r-md text-sm ${
 									viewMode === "edit"
-										? "bg-primary text-white"
+										? "bg-success text-white"
 										: "bg-gray-200 text-gray-700"
 								}`}
 							>
