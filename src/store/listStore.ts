@@ -12,6 +12,7 @@ type ListStore = {
   setLists: () => Promise<{ success?: boolean }>;
   updateList: (listId: string, data: List) => Promise<{ success?: boolean }>;
   createList: (data: List) => Promise<{ success: boolean, id?: string }>,
+  resetList: (listId: string) => Promise<{ success: boolean }>;
   deleteList: (listId: string) => Promise<{ success: boolean }>;
   clearListCache: () => void;
   getPath: () => string;
@@ -128,6 +129,28 @@ const listState = create<ListStore>()(
         console.log("error adding List", error);
       }
       return { success: false, id: "" }
+    },
+    resetList: async (listId: string) => {
+      try {
+        const path = get().getPath();
+        const items = get().lists.find(list => list.id === listId)?.items;
+        const resetItems = items.map(item => ({ ...item, completed: false }));
+        const res = await updateDoc(path, listId, { items: resetItems });
+        if (res.success) {
+          const listRes = await findDoc(path, listId);
+          if (listRes?.doc) {
+            set((state) => ({
+              lists: state.lists.map((list) =>
+                list.id === listId ? listRes.doc : list
+              ),
+            }));
+            return { success: true };
+          }
+        }
+      } catch (error) {
+        console.log("Error deleting list", error);
+      }
+      return { success: false };
     },
     deleteList: async (listId: string) => {
       try {

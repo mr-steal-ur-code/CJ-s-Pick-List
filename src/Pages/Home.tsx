@@ -8,19 +8,24 @@ import capitalizeWords from "../utils/capitalizeWords";
 import dateFromTimestamp from "../utils/dateFromTimestamp";
 import generateUuidv4 from "../utils/uuidv4";
 import toast from "react-hot-toast";
+import Modal from "../components/Modals/Modal";
 
 const Home: React.FC = () => {
 	document.title = "CJ's Pick List";
 	const selectRef = useRef<HTMLSelectElement>(null);
+	const modalRef = useRef(null);
 	const { user } = userState();
-	const { lists, deleteList } = listState();
+	const { lists, deleteList, resetList } = listState();
 	const [currentListId, setCurrentListId] = useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState({
+		reset: false,
+		delete: false,
+	});
 
 	const handleListSelect = async (listId: string) => {
 		setCurrentListId(lists?.find((list) => list?.id === listId)?.id || "");
 		selectRef.current.value = "";
-		const temp = lists?.find((list) => list?.id === listId)?.updatedAt;
-		console.log("updated at ", typeof temp, temp);
 	};
 
 	const newestLists = lists
@@ -32,25 +37,58 @@ const Home: React.FC = () => {
 			updated: list?.updatedAt,
 		}));
 
-	const handleDeleteList = async () => {
+	const handleFinishedList = async () => {
 		if (!currentListId) return;
-		if (!confirm("List Completed, Would you like to delete this list now?"))
-			return;
-		const res = await deleteList(currentListId);
-		if (res?.success) {
-			handleListSelect("");
-			toast.success("List Deleted");
-		} else toast.error("Error Deleting List");
+		setIsOpen(true);
 	};
 
-	console.log();
+	const handleResetList = async () => {
+		setIsLoading({ reset: true, delete: false });
+		const res = await resetList(currentListId);
+		if (res?.success) {
+			setIsLoading({ reset: false, delete: false });
+			handleListSelect("");
+			toast.success("List Reset");
+			modalRef?.current?.dismiss();
+		} else toast.error("Error Resetting List");
+	};
+
+	const handleDeleteList = async () => {
+		setIsLoading({ reset: false, delete: true });
+		const res = await deleteList(currentListId);
+		if (res?.success) {
+			setIsLoading({ reset: false, delete: false });
+			handleListSelect("");
+			toast.success("List Deleted");
+			modalRef?.current?.dismiss();
+		} else toast.error("Error Deleting List");
+	};
 
 	return (
 		<div className="fade-in">
 			<AppToaster />
+			<Modal ref={modalRef} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+				<h4>List Completed, what would you like to do?</h4>
+				<div className="flex justify-between p-4">
+					<Button
+						type="outline"
+						loading={isLoading?.reset}
+						disabled={isLoading?.reset || isLoading?.delete}
+						onClick={handleResetList}
+						text="Reset List"
+					/>
+					<Button
+						loading={isLoading?.delete}
+						disabled={isLoading?.reset || isLoading?.delete}
+						type="cancel"
+						onClick={handleDeleteList}
+						text="Delete List"
+					/>
+				</div>
+			</Modal>
 			{currentListId && (
 				<List
-					onListCompleted={handleDeleteList}
+					onListCompleted={handleFinishedList}
 					reset={() => handleListSelect("")}
 					listId={currentListId}
 				></List>

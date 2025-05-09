@@ -177,8 +177,7 @@ const PageList: React.FC = () => {
 							className="absolute left-1 top-2 cursor-pointer"
 						/>
 						<h3 className="text-center text-[rgb(var(--color-secondary))] pl-8 pr-2 py-2 rounded-lg font-bold shadow-md capitalize">
-							Editing {currentList?.category} List longer title wordswords
-							{currentList?.title}'
+							Editing {currentList?.category} List '{currentList?.title}'
 						</h3>
 					</div>
 					<div className="flex items-center justify-end px-4 py-2 shadow-sm">

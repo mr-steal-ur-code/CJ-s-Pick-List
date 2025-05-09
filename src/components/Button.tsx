@@ -72,19 +72,19 @@ const Button: React.FC<ButtonProps> = ({
 			break;
 		case "reset":
 			buttonClass = `${commonClasses} outline outline-${
-				color ? color : "primary"
+				color ? color.split("text-")[1] : "primary"
 			} outline-3`;
 			break;
 		case "outline":
 			buttonClass = `${commonClasses} outline outline-${
-				color ? color : "primary"
+				color ? color.split("text-")[1] : "primary"
 			} outline-3`;
 			break;
 		case "text":
 			buttonClass = commonClasses;
 			break;
 		default:
-			buttonClass = `bg-primary text-white ${commonClasses} `;
+			buttonClass = `bg-primary  ${commonClasses} `;
 			break;
 	}
 
