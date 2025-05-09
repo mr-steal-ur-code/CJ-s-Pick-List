@@ -53,7 +53,7 @@ const Card: React.FC<CardProps> = ({ list, onClick }) => {
 			</p>
 
 			<div className="mt-auto">
-				{list.items && list.items.length > 0 && (
+				{list.category !== "recipe" && list.items && list.items.length > 0 && (
 					<div className="mb-2">
 						<div className="flex justify-between text-sm mb-1">
 							<span>{list.items.length} items</span>

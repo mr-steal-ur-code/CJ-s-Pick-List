@@ -1,4 +1,4 @@
-import { MinusCircle, PlusCircle, Trash2 } from "lucide-react";
+import { CornerUpLeft, MinusCircle, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -169,11 +169,18 @@ const PageList: React.FC = () => {
 		<div className="fade-in">
 			{listId ? (
 				<>
-					<h3 className="text-center text-[rgb(var(--color-secondary))] px-4 py-2 rounded-lg font-bold shadow-md">
-						<span className="text-[rgb(var(--color-secondary))] font-bold capitalize">
-							Editing {currentList?.category} List '{currentList?.title}'
-						</span>
-					</h3>
+					<div className="relative flex items-center justify-center">
+						<CornerUpLeft
+							height={30}
+							width={30}
+							onClick={() => navigate("/lists")}
+							className="absolute left-1 top-2 cursor-pointer"
+						/>
+						<h3 className="text-center text-[rgb(var(--color-secondary))] pl-8 pr-2 py-2 rounded-lg font-bold shadow-md capitalize">
+							Editing {currentList?.category} List longer title wordswords
+							{currentList?.title}'
+						</h3>
+					</div>
 					<div className="flex items-center justify-end px-4 py-2 shadow-sm">
 						<div className="flex items-center gap-4">
 							<AddTempItem addTolistId={currentList?.id} />
