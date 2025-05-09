@@ -157,7 +157,12 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 												checked={recipe?.id in selectedRecipes}
 												onChange={() => toggleSelect(recipe?.id)}
 											/>
-											<span>{recipe?.title}</span>
+											<span
+												className="cursor-pointer"
+												onClick={() => toggleSelect(recipe?.id)}
+											>
+												{recipe?.title}
+											</span>
 										</div>
 										{recipe?.id in selectedRecipes && (
 											<input
