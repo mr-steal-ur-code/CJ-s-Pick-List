@@ -64,27 +64,27 @@ const Button: React.FC<ButtonProps> = ({
 			: type !== "text"
 			? "hover:opacity-70 active:opacity-20 p-2 cursor-pointer"
 			: "hover:opacity-70 active:opacity-20 cursor-pointer"
-	}  ${color ? color : ""} min-w-28 rounded-md transition-all duration-300`;
+	} ${color ?? ""} min-w-28 rounded-md transition-all duration-300`;
 
 	switch (type) {
 		case "cancel":
-			buttonClass = `${commonClasses} outline outline-[rgb(var(--color-danger))] outline-3`;
+			buttonClass = `${commonClasses} outline-[rgb(var(--color-danger))] outline-3`;
 			break;
 		case "reset":
-			buttonClass = `${commonClasses} outline outline-${
-				color ? color.split("text-")[1] : "primary"
+			buttonClass = `${commonClasses} outline-${
+				color ? color.split("-")[1] : "primary"
 			} outline-3`;
 			break;
 		case "outline":
-			buttonClass = `${commonClasses} outline outline-${
-				color ? color.split("text-")[1] : "primary"
+			buttonClass = `${commonClasses} outline-${
+				color ? color.split("-")[1] : "primary"
 			} outline-3`;
 			break;
 		case "text":
 			buttonClass = commonClasses;
 			break;
 		default:
-			buttonClass = `bg-primary  ${commonClasses} `;
+			buttonClass = `bg-primary ${commonClasses} `;
 			break;
 	}
 
@@ -105,6 +105,7 @@ const Button: React.FC<ButtonProps> = ({
 			setTimeout(() => onClick(), 50);
 		}
 	};
+	console.log("buttonClass", buttonClass);
 
 	return (
 		<button

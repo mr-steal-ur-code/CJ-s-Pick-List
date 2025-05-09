@@ -7,13 +7,13 @@ import isAllowedShare from "../../utils/isAllowedShare";
 import dateFromTimestamp from "../../utils/dateFromTimestamp";
 import { useNavigate } from "react-router-dom";
 import SuspenseLoader from "../SuspenseLoader";
+const Modal = lazy(() => import("./Modal"));
 
 type ModalProfileProps = {
 	isOpen: boolean;
 	onClose: () => void;
 	user: User;
 };
-const Modal = lazy(() => import("./Modal"));
 const ModalProfile: React.FC<ModalProfileProps> = ({
 	isOpen,
 	onClose,

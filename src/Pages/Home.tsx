@@ -68,27 +68,33 @@ const Home: React.FC = () => {
 	return (
 		<div className="fade-in">
 			<AppToaster />
-			<SuspenseLoader>
-				<Modal ref={modalRef} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-					<h4>List Completed, what would you like to do?</h4>
-					<div className="flex justify-between p-4">
-						<Button
-							type="outline"
-							loading={isLoading?.reset}
-							disabled={isLoading?.reset || isLoading?.delete}
-							onClick={handleResetList}
-							text="Reset List"
-						/>
-						<Button
-							loading={isLoading?.delete}
-							disabled={isLoading?.reset || isLoading?.delete}
-							type="cancel"
-							onClick={handleDeleteList}
-							text="Delete List"
-						/>
-					</div>
-				</Modal>
-			</SuspenseLoader>
+			{isOpen && (
+				<SuspenseLoader>
+					<Modal
+						ref={modalRef}
+						isOpen={isOpen}
+						onClose={() => setIsOpen(false)}
+					>
+						<h4>List Completed, what would you like to do?</h4>
+						<div className="flex justify-between p-4">
+							<Button
+								type="outline"
+								loading={isLoading?.reset}
+								disabled={isLoading?.reset || isLoading?.delete}
+								onClick={handleResetList}
+								text="Reset List"
+							/>
+							<Button
+								loading={isLoading?.delete}
+								disabled={isLoading?.reset || isLoading?.delete}
+								type="cancel"
+								onClick={handleDeleteList}
+								text="Delete List"
+							/>
+						</div>
+					</Modal>
+				</SuspenseLoader>
+			)}
 			{currentListId && (
 				<List
 					onListCompleted={handleFinishedList}

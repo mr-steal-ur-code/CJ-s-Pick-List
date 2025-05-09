@@ -1,12 +1,12 @@
 import AddItem from "../AddItem";
 import { lazy, useRef } from "react";
 import SuspenseLoader from "../SuspenseLoader";
+const Modal = lazy(() => import("./Modal"));
 
 type ModalItemAddProps = {
 	isOpen: boolean;
 	onClose: () => void;
 };
-const Modal = lazy(() => import("./Modal"));
 const ModalProfile: React.FC<ModalItemAddProps> = ({ isOpen, onClose }) => {
 	const modalRef = useRef(null);
 	const handleSubmit = () => {

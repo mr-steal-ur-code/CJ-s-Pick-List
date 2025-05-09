@@ -3,13 +3,13 @@ import Button from "../Button";
 import EditItem from "../EditItem";
 import { lazy, useRef } from "react";
 import SuspenseLoader from "../SuspenseLoader";
+const Modal = lazy(() => import("./Modal"));
 
 type ModalItemAddProps = {
 	isOpen: boolean;
 	onClose: () => void;
 	itemId?: string;
 };
-const Modal = lazy(() => import("./Modal"));
 const ModalProfile: React.FC<ModalItemAddProps> = ({
 	isOpen,
 	onClose,
