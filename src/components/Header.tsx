@@ -38,7 +38,7 @@ const Header = () => {
 		>
 			<div className={`flex flex-row items-center justify-between px-4 flex-1`}>
 				<ThemeSwitch />
-				<img className="h-10 w-10" src="/assets/svg/icon.svg" />
+				<img className="h-10 w-10" src="/assets/svg/icon.svg" alt="logo" />
 				<div className="flex flex-row gap-2 items-center">
 					{isLoggedIn === false ? <Link to="/sign-in">sign in</Link> : null}
 					<Avatar
