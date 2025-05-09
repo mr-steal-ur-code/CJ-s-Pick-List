@@ -171,7 +171,7 @@ const PageList: React.FC = () => {
 				<>
 					<h3 className="text-center text-[rgb(var(--color-secondary))] px-4 py-2 rounded-lg font-bold shadow-md">
 						<span className="text-[rgb(var(--color-secondary))] font-bold capitalize">
-							Editing {currentList?.category} {currentList?.title}
+							Editing {currentList?.category} List '{currentList?.title}'
 						</span>
 					</h3>
 					<div className="flex items-center justify-end px-4 py-2 shadow-sm">

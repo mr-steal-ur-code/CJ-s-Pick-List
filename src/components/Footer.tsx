@@ -12,7 +12,7 @@ const Footer = () => {
 	const currentPath = location.pathname;
 
 	return (
-		<footer className="h-20 pb-2 w-full bg-[rgb(var(--color-bkg2))] fixed bottom-0 flex flex-col items-center justify-center">
+		<footer className="h-20 pb-2 pt-2 w-full bg-[rgb(var(--color-bkg2))] fixed bottom-0 flex flex-col items-center justify-center">
 			<div className="flex flex-row items-center gap-12">
 				{links.map((link) => (
 					<Link

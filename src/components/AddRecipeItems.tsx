@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import listState from "../store/listStore";
 import { ChefHat } from "lucide-react";
 import toast from "react-hot-toast";
+import Button from "./Button";
 
 interface AddRecipeItemsProps {
 	addTolistId: string;
@@ -10,6 +11,9 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 	const dropdownRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { lists, updateList } = listState();
+	const [selectedRecipes, setSelectedRecipes] = useState<
+		Record<string, number>
+	>({});
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -24,43 +28,76 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 		};
 	}, []);
 
-	const handleAdd = async (selectedListId: string) => {
-		if (!selectedListId) return;
-		setIsOpen(false);
+	const toggleSelect = (id) => {
+		setSelectedRecipes((prev) => {
+			const newSelection = { ...prev };
+			if (newSelection[id]) {
+				delete newSelection[id];
+			} else {
+				newSelection[id] = 1;
+			}
+			return newSelection;
+		});
+	};
 
-		const selectedList = lists?.find((list) => list?.id === selectedListId);
+	const updateCount = (id, count) => {
+		setSelectedRecipes((prev) => ({
+			...prev,
+			[id]: Math.max(1, Number(count) || 1),
+		}));
+	};
+
+	const handleSubmit = () => {
+		const selected = Object.entries(selectedRecipes)?.map(([id, count]) => ({
+			id,
+			count,
+		}));
+		handleAdd(selected);
+	};
+
+	const handleAdd = async (
+		selectedRecipesWithCount: { id: string; count: number }[]
+	) => {
+		if (!selectedRecipesWithCount?.length) return;
+
 		const targetList = lists?.find((list) => list?.id === addTolistId);
+		if (!targetList) return;
 
-		if (!selectedList || !targetList) return;
-
-		const itemsToAdd = selectedList?.items || [];
 		const currentItems = targetList?.items || [];
-
 		const existingItemsMap = new Map();
 		currentItems?.forEach((item) => {
-			existingItemsMap?.set(item?.id, item);
+			existingItemsMap.set(item?.id, item);
 		});
 
 		const updatedItems = [...currentItems];
 
-		itemsToAdd.forEach((newItem) => {
-			const existingItem = existingItemsMap?.get(newItem?.id);
+		selectedRecipesWithCount.forEach(({ id: selectedListId, count }) => {
+			const selectedList = lists?.find((list) => list?.id === selectedListId);
+			if (!selectedList) return;
 
-			if (existingItem) {
-				const existingIndex = updatedItems.findIndex(
-					(item) => item?.id === newItem?.id
-				);
+			const itemsToAdd = selectedList?.items || [];
 
-				const existingQuantity = Number(existingItem.quantity) || 0;
-				const newQuantity = Number(newItem.quantity) || 0;
+			itemsToAdd.forEach((newItem) => {
+				const quantityToAdd = (Number(newItem?.quantity) || 1) * count;
+				const existingItem = existingItemsMap.get(newItem?.id);
 
-				updatedItems[existingIndex] = {
-					...existingItem,
-					quantity: existingQuantity + newQuantity,
-				};
-			} else {
-				updatedItems.push(newItem);
-			}
+				if (existingItem) {
+					const existingIndex = updatedItems?.findIndex(
+						(item) => item?.id === newItem?.id
+					);
+					const existingQuantity = Number(existingItem?.quantity) || 0;
+
+					updatedItems[existingIndex] = {
+						...existingItem,
+						quantity: existingQuantity + quantityToAdd,
+					};
+				} else {
+					updatedItems.push({
+						...newItem,
+						quantity: quantityToAdd,
+					});
+				}
+			});
 		});
 
 		const updatedTargetList = {
@@ -70,9 +107,13 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 
 		const res = await updateList(addTolistId, updatedTargetList);
 		toast.dismiss();
+		setIsOpen(false);
+		setSelectedRecipes({});
 		if (res?.success) {
 			toast.success("Recipe Items Added", { duration: 1200 });
-		} else toast.error("Error adding Recipe Items");
+		} else {
+			toast.error("Error adding Recipe Items");
+		}
 	};
 
 	const recipeOptions = lists
@@ -94,7 +135,7 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 
 			{isOpen && (
 				<div
-					className="fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] z-10"
+					className="z-50 fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)]"
 					onClick={() => setIsOpen(false)}
 				>
 					<div
@@ -105,19 +146,53 @@ const AddRecipeItems: React.FC<AddRecipeItemsProps> = ({ addTolistId }) => {
 						<div className="max-h-64 overflow-y-auto">
 							{recipeOptions?.length > 0 ? (
 								recipeOptions.map((recipe) => (
-									<button
-										key={recipe.id}
-										className="block w-full text-left px-4 py-2 my-4 rounded-md text-sm border border-tertiary"
-										onClick={() => handleAdd(recipe?.id)}
+									<div
+										key={recipe?.id}
+										className="flex items-center justify-between px-2 py-3 my-2 border border-tertiary rounded-md text-sm"
 									>
-										{recipe.title}
-									</button>
+										<div className="flex items-center space-x-2">
+											<input
+												className="w-5 h-5"
+												type="checkbox"
+												checked={recipe?.id in selectedRecipes}
+												onChange={() => toggleSelect(recipe?.id)}
+											/>
+											<span>{recipe?.title}</span>
+										</div>
+										{recipe?.id in selectedRecipes && (
+											<input
+												type="number"
+												min="1"
+												value={selectedRecipes[recipe?.id]}
+												onChange={(e) =>
+													updateCount(recipe?.id, e.target?.value)
+												}
+												className="w-9 border rounded text-center"
+											/>
+										)}
+									</div>
 								))
 							) : (
 								<div className="px-4 py-2 text-sm text-gray-500">
 									No recipes available
 								</div>
 							)}
+						</div>
+						<div className="flex justify-between p-2 pt-6">
+							<Button
+								color="text-[rgb(var(--color-danger))]"
+								type="outline"
+								onClick={() => {
+									setSelectedRecipes({});
+								}}
+								disabled={Object.keys(selectedRecipes)?.length === 0}
+								text="Clear"
+							/>
+							<Button
+								onClick={handleSubmit}
+								disabled={Object.keys(selectedRecipes)?.length === 0}
+								text="Add Selected Recipes"
+							/>
 						</div>
 					</div>
 				</div>

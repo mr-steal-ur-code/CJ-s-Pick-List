@@ -60,7 +60,7 @@ const Button: React.FC<ButtonProps> = ({
 			: "text-md"
 	} ${
 		disabled
-			? "opacity-40"
+			? "opacity-40 p-2"
 			: type !== "text"
 			? "hover:bg-[rgb(var(--color-hover-bkg))] active:bg-transparent hover:opacity-70 active:opacity-20 p-2"
 			: "hover:opacity-70 active:opacity-20"
@@ -73,10 +73,14 @@ const Button: React.FC<ButtonProps> = ({
 			buttonClass = `${commonClasses} outline outline-[rgb(var(--color-danger))] outline-3`;
 			break;
 		case "reset":
-			buttonClass = `${commonClasses} outline outline-tertiary outline-3`;
+			buttonClass = `${commonClasses} outline outline-${
+				color ? color : "primary"
+			} outline-3`;
 			break;
 		case "outline":
-			buttonClass = `${commonClasses} outline outline-primary outline-3`;
+			buttonClass = `${commonClasses} outline outline-${
+				color ? color : "primary"
+			} outline-3`;
 			break;
 		case "text":
 			buttonClass = commonClasses;
