@@ -2,6 +2,7 @@ import itemState from "../../store/itemStore";
 import Button from "../Button";
 import EditItem from "../EditItem";
 import { lazy, useRef } from "react";
+import SuspenseLoader from "../SuspenseLoader";
 
 type ModalItemAddProps = {
 	isOpen: boolean;
@@ -27,16 +28,22 @@ const ModalProfile: React.FC<ModalItemAddProps> = ({
 	};
 
 	return (
-		<Modal
-			ref={modalRef}
-			isOpen={isOpen}
-			onClose={onClose}
-			footerLeftBtn={
-				<Button type="cancel" text="Delete" onClick={handleDelete} />
-			}
-		>
-			<EditItem itemId={itemId} onSubmit={handleSubmit} />
-		</Modal>
+		<>
+			{isOpen && (
+				<SuspenseLoader>
+					<Modal
+						ref={modalRef}
+						isOpen={isOpen}
+						onClose={onClose}
+						footerLeftBtn={
+							<Button type="cancel" text="Delete" onClick={handleDelete} />
+						}
+					>
+						<EditItem itemId={itemId} onSubmit={handleSubmit} />
+					</Modal>
+				</SuspenseLoader>
+			)}
+		</>
 	);
 };
 

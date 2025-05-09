@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { lazy, useRef, useState } from "react";
 import Button from "../components/Button";
 import List from "../components/List";
 import AppToaster from "../components/Toast/AppToaster";
@@ -8,7 +8,8 @@ import capitalizeWords from "../utils/capitalizeWords";
 import dateFromTimestamp from "../utils/dateFromTimestamp";
 import generateUuidv4 from "../utils/uuidv4";
 import toast from "react-hot-toast";
-import Modal from "../components/Modals/Modal";
+import SuspenseLoader from "../components/SuspenseLoader";
+const Modal = lazy(() => import("../components/Modals/Modal"));
 
 const Home: React.FC = () => {
 	document.title = "CJ's Pick List";
@@ -67,25 +68,27 @@ const Home: React.FC = () => {
 	return (
 		<div className="fade-in">
 			<AppToaster />
-			<Modal ref={modalRef} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-				<h4>List Completed, what would you like to do?</h4>
-				<div className="flex justify-between p-4">
-					<Button
-						type="outline"
-						loading={isLoading?.reset}
-						disabled={isLoading?.reset || isLoading?.delete}
-						onClick={handleResetList}
-						text="Reset List"
-					/>
-					<Button
-						loading={isLoading?.delete}
-						disabled={isLoading?.reset || isLoading?.delete}
-						type="cancel"
-						onClick={handleDeleteList}
-						text="Delete List"
-					/>
-				</div>
-			</Modal>
+			<SuspenseLoader>
+				<Modal ref={modalRef} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+					<h4>List Completed, what would you like to do?</h4>
+					<div className="flex justify-between p-4">
+						<Button
+							type="outline"
+							loading={isLoading?.reset}
+							disabled={isLoading?.reset || isLoading?.delete}
+							onClick={handleResetList}
+							text="Reset List"
+						/>
+						<Button
+							loading={isLoading?.delete}
+							disabled={isLoading?.reset || isLoading?.delete}
+							type="cancel"
+							onClick={handleDeleteList}
+							text="Delete List"
+						/>
+					</div>
+				</Modal>
+			</SuspenseLoader>
 			{currentListId && (
 				<List
 					onListCompleted={handleFinishedList}

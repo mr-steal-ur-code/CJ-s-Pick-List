@@ -1,5 +1,6 @@
 import AddItem from "../AddItem";
 import { lazy, useRef } from "react";
+import SuspenseLoader from "../SuspenseLoader";
 
 type ModalItemAddProps = {
 	isOpen: boolean;
@@ -12,9 +13,15 @@ const ModalProfile: React.FC<ModalItemAddProps> = ({ isOpen, onClose }) => {
 		if (onClose) modalRef?.current?.dismiss();
 	};
 	return (
-		<Modal ref={modalRef} isOpen={isOpen} onClose={onClose}>
-			<AddItem onSubmit={handleSubmit} />
-		</Modal>
+		<>
+			{isOpen && (
+				<SuspenseLoader>
+					<Modal ref={modalRef} isOpen={isOpen} onClose={onClose}>
+						<AddItem onSubmit={handleSubmit} />
+					</Modal>
+				</SuspenseLoader>
+			)}
+		</>
 	);
 };
 
