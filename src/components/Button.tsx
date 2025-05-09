@@ -68,23 +68,23 @@ const Button: React.FC<ButtonProps> = ({
 
 	switch (type) {
 		case "cancel":
-			buttonClass = `${commonClasses} outline-[rgb(var(--color-danger))] outline-3`;
+			buttonClass = `${commonClasses} border-3 border-[rgb(var(--color-danger))]`;
 			break;
 		case "reset":
-			buttonClass = `${commonClasses} outline-${
+			buttonClass = `${commonClasses} border-3 border-${
 				color ? color.split("-")[1] : "primary"
-			} outline-3`;
+			}`;
 			break;
 		case "outline":
-			buttonClass = `${commonClasses} outline-${
+			buttonClass = `${commonClasses} border-3 border-${
 				color ? color.split("-")[1] : "primary"
-			} outline-3`;
+			}`;
 			break;
 		case "text":
 			buttonClass = commonClasses;
 			break;
 		default:
-			buttonClass = `bg-primary ${commonClasses} `;
+			buttonClass = `bg-primary ${commonClasses}`;
 			break;
 	}
 
@@ -105,7 +105,6 @@ const Button: React.FC<ButtonProps> = ({
 			setTimeout(() => onClick(), 50);
 		}
 	};
-	console.log("buttonClass", buttonClass);
 
 	return (
 		<button
