@@ -3,6 +3,7 @@ import listState from "../store/listStore";
 import { PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import ItemForm from "./ItemForm";
+import generateUuidv4 from "../utils/uuidv4";
 
 interface AddTempItemsProps {
 	addTolistId: string;
@@ -34,7 +35,7 @@ const AddTempItem: React.FC<AddTempItemsProps> = ({ addTolistId }) => {
 
 		const currentItems = targetList?.items || [];
 
-		const updatedItems = [...currentItems, item];
+		const updatedItems = [...currentItems, { ...item, id: generateUuidv4() }];
 
 		const updatedList = {
 			...targetList,
